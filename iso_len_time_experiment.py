@@ -9,9 +9,9 @@ def experiment(filename):
             assert len(data) == 3
             assert len(data[0]) == len(data[1])
             assert len(data[0]) == len(data[2])
-            assert re.fullmatch("^[ACGU]+$", data[0]) is not None
-            assert re.fullmatch("^[(.)]+$", data[1]) is not None
-            assert re.fullmatch("^[(.)]+$", data[2]) is not None
+            assert re.fullmatch(r"^[ACGU]+$", data[0]) is not None
+            assert re.fullmatch(r"^[(.)]+$", data[1]) is not None
+            assert re.fullmatch(r"^[(.)]+$", data[2]) is not None
 
             start = time.time()
             pathway = getMinBarrierPathDijkstra(data[0], data[1], data[2])

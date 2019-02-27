@@ -22,7 +22,7 @@ def GetS151Dataset():
                 else:
                     structure += ")"
             dataset.append([address, sequence, structure])
-    return dataset
+    return sorted(dataset)
 
 
 
@@ -45,7 +45,12 @@ def GetLocalOptima(sequence):
     return result
 
 if __name__ == '__main__':
-    aaa = GetS151Dataset()
-    bbb = GetLocalOptima(aaa[0][1])
-    print(bbb)
+    s151 = GetS151Dataset()
+    for data in s151:
+        print(data[1])
+        structures = GetLocalOptima(data[1])
+        for s in structures:
+            print(s)
+
+        
     
