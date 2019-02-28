@@ -47,4 +47,5 @@ def Voss2004GreedyDirect(sequence, structure1, structure2, k = 1, seed = 12345):
         PossibleNextStateAndEnergy = [(energyOfStr(sequence, x), x) for x in PossibleNextState]
         NextState = random.choice(sorted(PossibleNextStateAndEnergy)[0:k])[1]
         answer.append(NextState)
+        A = set(basePairList(NextState))
     return answer
