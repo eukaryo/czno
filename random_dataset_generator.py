@@ -41,11 +41,7 @@ def basePairList(secStr):
 
 def randomSeqGenerator(length, seed):
     random.seed(seed)
-    base = ["A","C","G","U"]
-    seq = ""
-    for i in range(length):
-        seq += base[random.randint(0,3)]
-    return seq
+    return "".join([random.choice(["A","C","G","U"]) for _ in range(length)])
 
 def isoLenGenerator(length, dist_lower, dist_upper, n):
     result = [set([]) for i in range(dist_lower, dist_upper+1)]

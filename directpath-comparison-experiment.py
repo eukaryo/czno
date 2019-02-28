@@ -1,6 +1,7 @@
 
 import re
 from czno import getMinBarrierPathDijkstra, basePairList, energyOfStr
+from previous_direct_methods import MorganHiggs1998GreedyDirect, Voss2004GreedyDirect
 
 def HammingDistance(structure1, structure2):
     bp1 = set(basePairList(structure1))
@@ -33,14 +34,24 @@ def PathwayToBarrier(sequence, pathway):
     return max([energyOfStr(sequence, s) for s in pathway])
     
 
-def SingleExperiment(sequence, structure1, structure2):
+def DirectPathSingleExperiment(sequence, structure1, structure2):
 
     result = []
 
-    pathway = getMinBarrierPathDijkstra(sequence, structure1, structure2)
-    result.append(max([energyOfStr(sequence, s) for s in pathway]))
+    pathway1 = getMinBarrierPathDijkstra(sequence, structure1, structure2)
+    result.append(PathwayToBarrier(sequence, pathway1))
+    
+    pathway2 = MorganHiggs1998GreedyDirect(sequence, structure1, structure2)
+    result.append(PathwayToBarrier(sequence, pathway2))
 
-    #TODO: ここで、先行手法をsubprocessで叩いて結果を得てエネルギーバリアを求める
+    pathway3 = Voss2004GreedyDirect(sequence, structure1, structure2)
+    result.append(PathwayToBarrier(sequence, pathway3))
+
+    best_value4 = float("inf")
+    for i in range(1000):
+        pathway4 = Voss2004GreedyDirect(sequence, structure1, structure2, 10, i)
+        best_value4 = min(best_value4, PathwayToBarrier(sequence, pathway4))
+    result.append(best_value4)
 
     return result
 
@@ -52,6 +63,6 @@ if __name__ == '__main__':
             for j in range(i+1, len(data[1])):
                 hamdist = HammingDistance(data[1][i], data[1][j])
                 if 5 <= hamdist and hamdist <= 20:
-                    result = SingleExperiment(data[0], data[1][i], data[1][j])
+                    result = DirectPathSingleExperiment(data[0], data[1][i], data[1][j])
                     print(str(len(data[0]))+" "+str(hamdist)+" "+" ".join([str(x) for x in result]))
 
