@@ -7,3 +7,4 @@ python3 iso_dist_time_experiment.py dataset-iso-dist.txt > result-isodist-time.t
 python3 s151Rfam-localminima-generator.py > s151-localminima-dataset.txt
 tar cvJf s151-localminima-dataset.txt.tar.xz s151-localminima-dataset.txt
 tar xvJf s151-localminima-dataset.txt.tar.xz
+python3 directpath-comparison-experiment.py > directpath-result.txt
