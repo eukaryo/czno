@@ -19,8 +19,8 @@ Copyright (c) 2019 Hiroki Takizawa
 namespace czno_cpp {
 
 void TimeExperiment1(const int i);
+void TimeExperiment1x(const int i);
 void TimeExperiment2(const int i);
-void TimeExperiment3(const int i);
 void AccuracyExperiment1(const int i);
 void IndirectExperiment1(const int i);
 

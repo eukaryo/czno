@@ -27,10 +27,23 @@ Copyright (c) 2019 Hiroki Takizawa
 namespace czno_cpp {
 
 std::pair<std::vector<std::string>, double>
+MinimumBarrierDirectPathDijkstra1Turn(
+	const std::string& sequence,
+	const std::string& structure1,
+	const std::string& structure2);
+
+std::pair<std::vector<std::string>, double>
 MinimumBarrierDirectPathDijkstra(
 	const std::string& sequence,
 	const std::string& structure1,
 	const std::string& structure2);
+
+std::pair<std::vector<std::string>, double>
+MinimumBarrierDirectPathDijkstraOld(
+	const std::string& sequence,
+	const std::string& structure1,
+	const std::string& structure2);
+
 std::vector<std::string>
 ImprovePathway(
 	const std::string& sequence,

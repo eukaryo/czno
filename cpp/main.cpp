@@ -30,12 +30,12 @@ int main_(int argc, char *argv[]) {
 			for (int i = 1; i <= 1600; ++i)TimeExperiment1(i - 1);
 			return 0;
 		}
-		if (std::string(argv[1]) == std::string("time2")) {
-			for (int i = 1; i <= 1100; ++i)TimeExperiment2(i - 1);
+		if (std::string(argv[1]) == std::string("time1x")) {
+			for (int i = 1; i <= 1600; ++i)TimeExperiment1x(i - 1);
 			return 0;
 		}
-		if (std::string(argv[1]) == std::string("time3")) {
-			for (int i = 1; i <= 1600; ++i)TimeExperiment3(i - 1);
+		if (std::string(argv[1]) == std::string("time2")) {
+			for (int i = 1; i <= 1100; ++i)TimeExperiment2(i - 1);
 			return 0;
 		}
 		if (std::string(argv[1]) == std::string("accu1")) {
@@ -53,12 +53,12 @@ int main_(int argc, char *argv[]) {
 			TimeExperiment1(std::stoi(std::string(argv[2])) - 1);
 			return 0;
 		}
-		if (std::string(argv[1]) == std::string("time2")) {
-			TimeExperiment2(std::stoi(std::string(argv[2])) - 1);
+		if (std::string(argv[1]) == std::string("time1x")) {
+			TimeExperiment1x(std::stoi(std::string(argv[2])) - 1);
 			return 0;
 		}
-		if (std::string(argv[1]) == std::string("time3")) {
-			TimeExperiment3(std::stoi(std::string(argv[2])) - 1);
+		if (std::string(argv[1]) == std::string("time2")) {
+			TimeExperiment2(std::stoi(std::string(argv[2])) - 1);
 			return 0;
 		}
 		if (std::string(argv[1]) == std::string("accu1")) {

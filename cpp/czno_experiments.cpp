@@ -48,17 +48,123 @@ void TimeExperiment1(const int i) {
 	const auto dataset = DatasetReader("random_dataset/dataset-iso-len.txt");
 	if (i < 0 || dataset.size() <= i)return;
 
+	const bool first_is_stable = EnergyOfStructure(dataset[i].first, dataset[i].second.first) < EnergyOfStructure(dataset[i].first, dataset[i].second.second);
+	const auto stable = first_is_stable ? dataset[i].second.first : dataset[i].second.second;
+	const auto instable = first_is_stable ? dataset[i].second.second : dataset[i].second.first;
+
 	const int H = HammingDistance(dataset[i].second.first, dataset[i].second.second);
 	ResetCount();
-	std::cout << "LOG: start: " << i << "/" << dataset.size() << ", length = " << dataset[i].first.size() << ", Hamming distance = " << H << std::endl;
-	const auto start = std::chrono::system_clock::now();
-	const auto x = MinimumBarrierDirectPathDijkstra(dataset[i].first, dataset[i].second.first, dataset[i].second.second);
-	const auto end = std::chrono::system_clock::now();
-	const int T = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
-	std::cout << "LOG: end: " << i << "/" << dataset.size() << ",  elapsed time = " << T << " ms" << std::endl;
-	std::cout << "RESULT: " << i << " " << dataset[i].first.size() << " " << H << " " << T << " " << GetCount() << " " << x.second << std::endl;
-	assert(IsValidPathway(dataset[i].second.first, dataset[i].second.second, x.first));
+	std::cout << "LOG: start: proposed, new " << i << "/" << dataset.size() << ", length = " << dataset[i].first.size() << ", Hamming distance = " << H << std::endl;
+	const auto start1 = std::chrono::system_clock::now();
+	const auto x1 = MinimumBarrierDirectPathDijkstra(dataset[i].first, dataset[i].second.first, dataset[i].second.second);
+	const auto end1 = std::chrono::system_clock::now();
+	const int T1 = std::chrono::duration_cast<std::chrono::milliseconds>(end1 - start1).count();
+	const int C1 = GetCount();
+	std::cout << "LOG: end: " << i << "/" << dataset.size() << ",  elapsed time = " << T1 << " ms" << std::endl;
+	ResetCount();
+	std::cout << "LOG: start: proposed, old, start=stable " << i << "/" << dataset.size() << ", length = " << dataset[i].first.size() << ", Hamming distance = " << H << std::endl;
+	const auto start2 = std::chrono::system_clock::now();
+	const auto x2 = MinimumBarrierDirectPathDijkstraOld(dataset[i].first, stable, instable);
+	const auto end2 = std::chrono::system_clock::now();
+	const int T2 = std::chrono::duration_cast<std::chrono::milliseconds>(end2 - start2).count();
+	const int C2 = GetCount();
+	std::cout << "LOG: end: " << i << "/" << dataset.size() << ",  elapsed time = " << T2 << " ms" << std::endl;
+	ResetCount();
+	std::cout << "LOG: start: proposed, old, start=instable " << i << "/" << dataset.size() << ", length = " << dataset[i].first.size() << ", Hamming distance = " << H << std::endl;
+	const auto start3 = std::chrono::system_clock::now();
+	const auto x3 = MinimumBarrierDirectPathDijkstraOld(dataset[i].first, instable, stable);
+	const auto end3 = std::chrono::system_clock::now();
+	const int T3 = std::chrono::duration_cast<std::chrono::milliseconds>(end3 - start3).count();
+	const int C3 = GetCount();
+	std::cout << "LOG: end: " << i << "/" << dataset.size() << ",  elapsed time = " << T3 << " ms" << std::endl;
+	ResetCount();
+	std::cout << "LOG: start: findpath " << i << "/" << dataset.size() << ", length = " << dataset[i].first.size() << ", Hamming distance = " << H << std::endl;
+	const auto start4 = std::chrono::system_clock::now();
+	const auto x4 = Flamm2001FindpathDirect(dataset[i].first, dataset[i].second.first, dataset[i].second.second, 1024 * 1024 * 64);
+	const auto end4 = std::chrono::system_clock::now();
+	const int T4 = std::chrono::duration_cast<std::chrono::milliseconds>(end4 - start4).count();
+	const int C4 = GetCount();
+	std::cout << "LOG: end: " << i << "/" << dataset.size() << ",  elapsed time = " << T4 << " ms" << std::endl;
+	assert(IsValidPathway(dataset[i].second.first, dataset[i].second.second, x1.first));
+	assert(IsValidPathway(stable, instable, x2.first));
+	assert(IsValidPathway(instable, stable, x3.first));
+	assert(IsValidPathway(dataset[i].second.first, dataset[i].second.second, x4.first));
+	assert(x1.second == x2.second);
+	assert(x1.second == x3.second);
+	assert(x1.second == x4.second);
+	std::cout << "RESULT: " << i << " " << dataset[i].first.size() << " " << H << " " <<
+		T1 << " " << C1 << " " <<
+		T2 << " " << C2 << " " <<
+		T3 << " " << C3 << " " <<
+		T4 << " " << C4 << " " << x1.second << std::endl;
+	return;
+}
+void TimeExperiment1x(const int i) {
+	//N=100, ƒnƒ~ƒ“ƒO‹——£5`20
 
+	const auto dataset = DatasetReader("random_dataset/dataset-iso-len.txt");
+	if (i < 0 || dataset.size() <= i)return;
+
+	const bool first_is_stable = EnergyOfStructure(dataset[i].first, dataset[i].second.first) < EnergyOfStructure(dataset[i].first, dataset[i].second.second);
+	const auto stable = first_is_stable ? dataset[i].second.first : dataset[i].second.second;
+	const auto instable = first_is_stable ? dataset[i].second.second : dataset[i].second.first;
+
+	const int H = HammingDistance(dataset[i].second.first, dataset[i].second.second);
+	ResetCount();
+	std::cout << "LOG: start: proposed, new " << i << "/" << dataset.size() << ", length = " << dataset[i].first.size() << ", Hamming distance = " << H << std::endl;
+	const auto start1 = std::chrono::system_clock::now();
+	const auto x1 = MinimumBarrierDirectPathDijkstra(dataset[i].first, dataset[i].second.first, dataset[i].second.second);
+	const auto end1 = std::chrono::system_clock::now();
+	const int T1 = std::chrono::duration_cast<std::chrono::milliseconds>(end1 - start1).count();
+	const int C1 = GetCount();
+	std::cout << "LOG: end: " << i << "/" << dataset.size() << ",  elapsed time = " << T1 << " ms" << std::endl;
+	ResetCount();
+	std::cout << "LOG: start: proposed, old, start=stable " << i << "/" << dataset.size() << ", length = " << dataset[i].first.size() << ", Hamming distance = " << H << std::endl;
+	const auto start2 = std::chrono::system_clock::now();
+	const auto x2 = MinimumBarrierDirectPathDijkstraOld(dataset[i].first, stable, instable);
+	const auto end2 = std::chrono::system_clock::now();
+	const int T2 = std::chrono::duration_cast<std::chrono::milliseconds>(end2 - start2).count();
+	const int C2 = GetCount();
+	std::cout << "LOG: end: " << i << "/" << dataset.size() << ",  elapsed time = " << T2 << " ms" << std::endl;
+	ResetCount();
+	std::cout << "LOG: start: proposed, old, start=instable " << i << "/" << dataset.size() << ", length = " << dataset[i].first.size() << ", Hamming distance = " << H << std::endl;
+	const auto start3 = std::chrono::system_clock::now();
+	const auto x3 = MinimumBarrierDirectPathDijkstraOld(dataset[i].first, instable, stable);
+	const auto end3 = std::chrono::system_clock::now();
+	const int T3 = std::chrono::duration_cast<std::chrono::milliseconds>(end3 - start3).count();
+	const int C3 = GetCount();
+	std::cout << "LOG: end: " << i << "/" << dataset.size() << ",  elapsed time = " << T3 << " ms" << std::endl;
+	ResetCount();
+	std::cout << "LOG: start: findpath " << i << "/" << dataset.size() << ", length = " << dataset[i].first.size() << ", Hamming distance = " << H << std::endl;
+	const auto start4 = std::chrono::system_clock::now();
+	const auto x4 = Flamm2001FindpathDirect(dataset[i].first, dataset[i].second.first, dataset[i].second.second, 1024 * 1024 * 64);
+	const auto end4 = std::chrono::system_clock::now();
+	const int T4 = std::chrono::duration_cast<std::chrono::milliseconds>(end4 - start4).count();
+	const int C4 = GetCount();
+	std::cout << "LOG: end: " << i << "/" << dataset.size() << ",  elapsed time = " << T4 << " ms" << std::endl;
+	ResetCount();
+	std::cout << "LOG: start: new,coroutine " << i << "/" << dataset.size() << ", length = " << dataset[i].first.size() << ", Hamming distance = " << H << std::endl;
+	const auto start5 = std::chrono::system_clock::now();
+	const auto x5 = MinimumBarrierDirectPathDijkstra1Turn(dataset[i].first, dataset[i].second.first, dataset[i].second.second);
+	const auto end5 = std::chrono::system_clock::now();
+	const int T5 = std::chrono::duration_cast<std::chrono::milliseconds>(end5 - start5).count();
+	const int C5 = GetCount();
+	std::cout << "LOG: end: " << i << "/" << dataset.size() << ",  elapsed time = " << T5 << " ms" << std::endl;
+	assert(IsValidPathway(dataset[i].second.first, dataset[i].second.second, x1.first));
+	assert(IsValidPathway(stable, instable, x2.first));
+	assert(IsValidPathway(instable, stable, x3.first));
+	assert(IsValidPathway(dataset[i].second.first, dataset[i].second.second, x4.first));
+	assert(IsValidPathway(dataset[i].second.first, dataset[i].second.second, x5.first));
+	assert(x1.second == x2.second);
+	assert(x1.second == x3.second);
+	assert(x1.second == x4.second);
+	assert(x1.second == x5.second);
+	std::cout << "RESULT: " << i << " " << dataset[i].first.size() << " " << H << " " <<
+		T1 << " " << C1 << " " <<
+		T2 << " " << C2 << " " <<
+		T3 << " " << C3 << " " <<
+		T4 << " " << C4 << " " <<
+		T5 << " " << C5 << " " << x1.second << std::endl;
 	return;
 }
 void TimeExperiment2(const int i) {
@@ -67,40 +173,66 @@ void TimeExperiment2(const int i) {
 	const auto dataset = DatasetReader("random_dataset/dataset-iso-dist.txt");
 	if (i < 0 || dataset.size() <= i)return;
 
-	const int H = HammingDistance(dataset[i].second.first, dataset[i].second.second);
-	ResetCount();
-	std::cout << "LOG: start: " << i << "/" << dataset.size() << ", length = " << dataset[i].first.size() << ", Hamming distance = " << H << std::endl;
-	const auto start = std::chrono::system_clock::now();
-	const auto x = MinimumBarrierDirectPathDijkstra(dataset[i].first, dataset[i].second.first, dataset[i].second.second);
-	const auto end = std::chrono::system_clock::now();
-	const int T = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
-	std::cout << "LOG: end: " << i << "/" << dataset.size() << ",  elapsed time = " << T << " ms" << std::endl;
-	std::cout << "RESULT: " << i << " " << dataset[i].first.size() << " " << H << " " << T << " " << GetCount() << " " << x.second << std::endl;
-	assert(IsValidPathway(dataset[i].second.first, dataset[i].second.second, x.first));
-
-	return;
-}
-
-void TimeExperiment3(const int i) {
-	//Findpath‚ÅŒµ–§‰ğ
-
-	const auto dataset = DatasetReader("random_dataset/dataset-iso-len.txt");
-	if (i < 0 || dataset.size() <= i)return;
+	const bool first_is_stable = EnergyOfStructure(dataset[i].first, dataset[i].second.first) < EnergyOfStructure(dataset[i].first, dataset[i].second.second);
+	const auto stable = first_is_stable ? dataset[i].second.first : dataset[i].second.second;
+	const auto instable = first_is_stable ? dataset[i].second.second : dataset[i].second.first;
 
 	const int H = HammingDistance(dataset[i].second.first, dataset[i].second.second);
 	ResetCount();
-	std::cout << "LOG: start: " << i << "/" << dataset.size() << ", length = " << dataset[i].first.size() << ", Hamming distance = " << H << std::endl;
-	const auto start = std::chrono::system_clock::now();
-	const auto x = Flamm2001FindpathDirect(dataset[i].first, dataset[i].second.first, dataset[i].second.second, 1024 * 1024 * 64);
-	const auto end = std::chrono::system_clock::now();
-	const int T = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
-	std::cout << "LOG: end: " << i << "/" << dataset.size() << ",  elapsed time = " << T << " ms" << std::endl;
-	std::cout << "RESULT: " << i << " " << dataset[i].first.size() << " " << H << " " << T << " " << GetCount() << " " << x.second << std::endl;
-	const auto x2 = MinimumBarrierDirectPathDijkstra(dataset[i].first, dataset[i].second.first, dataset[i].second.second);
-	assert(IsValidPathway(dataset[i].second.first, dataset[i].second.second, x.first));
-	assert(IsValidPathway(dataset[i].second.first, dataset[i].second.second, x2.first));
-	assert(x.second == x2.second);
-
+	std::cout << "LOG: start: proposed, new " << i << "/" << dataset.size() << ", length = " << dataset[i].first.size() << ", Hamming distance = " << H << std::endl;
+	const auto start1 = std::chrono::system_clock::now();
+	const auto x1 = MinimumBarrierDirectPathDijkstra(dataset[i].first, dataset[i].second.first, dataset[i].second.second);
+	const auto end1 = std::chrono::system_clock::now();
+	const int T1 = std::chrono::duration_cast<std::chrono::milliseconds>(end1 - start1).count();
+	const int C1 = GetCount();
+	std::cout << "LOG: end: " << i << "/" << dataset.size() << ",  elapsed time = " << T1 << " ms" << std::endl;
+	ResetCount();
+	std::cout << "LOG: start: proposed, old, start=stable " << i << "/" << dataset.size() << ", length = " << dataset[i].first.size() << ", Hamming distance = " << H << std::endl;
+	const auto start2 = std::chrono::system_clock::now();
+	const auto x2 = MinimumBarrierDirectPathDijkstraOld(dataset[i].first, stable, instable);
+	const auto end2 = std::chrono::system_clock::now();
+	const int T2 = std::chrono::duration_cast<std::chrono::milliseconds>(end2 - start2).count();
+	const int C2 = GetCount();
+	std::cout << "LOG: end: " << i << "/" << dataset.size() << ",  elapsed time = " << T2 << " ms" << std::endl;
+	ResetCount();
+	std::cout << "LOG: start: proposed, old, start=instable " << i << "/" << dataset.size() << ", length = " << dataset[i].first.size() << ", Hamming distance = " << H << std::endl;
+	const auto start3 = std::chrono::system_clock::now();
+	const auto x3 = MinimumBarrierDirectPathDijkstraOld(dataset[i].first, instable, stable);
+	const auto end3 = std::chrono::system_clock::now();
+	const int T3 = std::chrono::duration_cast<std::chrono::milliseconds>(end3 - start3).count();
+	const int C3 = GetCount();
+	std::cout << "LOG: end: " << i << "/" << dataset.size() << ",  elapsed time = " << T3 << " ms" << std::endl;
+	ResetCount();
+	std::cout << "LOG: start: findpath " << i << "/" << dataset.size() << ", length = " << dataset[i].first.size() << ", Hamming distance = " << H << std::endl;
+	const auto start4 = std::chrono::system_clock::now();
+	const auto x4 = Flamm2001FindpathDirect(dataset[i].first, dataset[i].second.first, dataset[i].second.second, 1024 * 1024 * 64);
+	const auto end4 = std::chrono::system_clock::now();
+	const int T4 = std::chrono::duration_cast<std::chrono::milliseconds>(end4 - start4).count();
+	const int C4 = GetCount();
+	std::cout << "LOG: end: " << i << "/" << dataset.size() << ",  elapsed time = " << T4 << " ms" << std::endl;
+	ResetCount();
+	std::cout << "LOG: start: new,coroutine " << i << "/" << dataset.size() << ", length = " << dataset[i].first.size() << ", Hamming distance = " << H << std::endl;
+	const auto start5 = std::chrono::system_clock::now();
+	const auto x5 = MinimumBarrierDirectPathDijkstra1Turn(dataset[i].first, dataset[i].second.first, dataset[i].second.second);
+	const auto end5 = std::chrono::system_clock::now();
+	const int T5 = std::chrono::duration_cast<std::chrono::milliseconds>(end5 - start5).count();
+	const int C5 = GetCount();
+	std::cout << "LOG: end: " << i << "/" << dataset.size() << ",  elapsed time = " << T5 << " ms" << std::endl;
+	assert(IsValidPathway(dataset[i].second.first, dataset[i].second.second, x1.first));
+	assert(IsValidPathway(stable, instable, x2.first));
+	assert(IsValidPathway(instable, stable, x3.first));
+	assert(IsValidPathway(dataset[i].second.first, dataset[i].second.second, x4.first));
+	assert(IsValidPathway(dataset[i].second.first, dataset[i].second.second, x5.first));
+	assert(x1.second == x2.second);
+	assert(x1.second == x3.second);
+	assert(x1.second == x4.second);
+	assert(x1.second == x5.second);
+	std::cout << "RESULT: " << i << " " << dataset[i].first.size() << " " << H << " " <<
+		T1 << " " << C1 << " " <<
+		T2 << " " << C2 << " " <<
+		T3 << " " << C3 << " " <<
+		T4 << " " << C4 << " " <<
+		T5 << " " << C5 << " " << x1.second << std::endl;
 	return;
 }
 
