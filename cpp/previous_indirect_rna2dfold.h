@@ -3,8 +3,8 @@ GNU GPL v2
 Copyright (c) 2020 Hiroki Takizawa
 */
 
-#ifndef PREVIOUS_DIRECT_TABU_H_
-#define PREVIOUS_DIRECT_TABU_H_
+#ifndef PREVIOUS_INDIRECT_RNA2DFOLD_H_
+#define PREVIOUS_INDIRECT_RNA2DFOLD_H_
 
 #include <iostream>
 #include <fstream>
@@ -21,20 +21,17 @@ Copyright (c) 2020 Hiroki Takizawa
 #include <random>
 #include <chrono>
 #include <sstream>
+#include <queue>
 
 namespace czno_cpp {
 
 std::pair<std::vector<std::string>, double>
-Dotu2010TabuIndirect(
+RNA2DFoldIndirect(
 	const std::string& sequence,
 	const std::string& structure1,
 	const std::string& structure2,
-	const int k,
-	const double w_0,
-	const int max_stable,
-	const double energy_diff_bound,
-	const int random_seed);
+	const int maxdist);
 
 }
 
-#endif//PREVIOUS_DIRECT_TABU_H_
+#endif//PREVIOUS_INDIRECT_RNA2DFOLD_H_

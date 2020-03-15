@@ -1,6 +1,6 @@
-/*
+ï»¿/*
 GNU GPL v2
-Copyright (c) 2019 Hiroki Takizawa
+Copyright (c) 2020 Hiroki Takizawa
 */
 
 #include "previous_indirect_tabu.h"
@@ -67,7 +67,7 @@ Dotu2010TabuIndirect(
 	std::mt19937_64 rnd(random_seed);
 	std::uniform_int_distribution<int>tabu_tenure(4, std::max<int>(4, HammingDistance(structure1, structure2) - 1));
 
-	//•Ï”‚½‚¿‚Ì€”õ
+	//å¤‰æ•°ãŸã¡ã®æº–å‚™
 	const double energy_upper_bound = std::max<double>(
 		EnergyOfStructure(sequence, structure1),
 		EnergyOfStructure(sequence, structure2)
@@ -83,7 +83,7 @@ Dotu2010TabuIndirect(
 	int best_distance = HammingDistance(structure1, structure2);
 	int no_improvement_count = 0;
 
-	//FitnessŠÖ”‚Í[Dotu et al.,2010]‚ÌFig10‚Ì‰º‚É‚ ‚é®
+	//Fitnessé–¢æ•°ã¯[Dotu et al.,2010]ã®Fig10ã®ä¸‹ã«ã‚ã‚‹å¼
 	const auto Fitness = [&](const std::string& x) {
 		return EnergyOfStructure(sequence, x) + w * HammingDistance(x, structure2);
 	};
@@ -92,8 +92,8 @@ Dotu2010TabuIndirect(
 
 		/*HEAVY*/assert(IsValidPathway(structure1, S, pathway));
 		std::cout << "LOG: RNATABUPATH: start: count = " << count << std::endl;
-		//S‚©‚çƒnƒ~ƒ“ƒO‹——£1ˆá‚¤\‘¢‚½‚¿‚Ì‚¤‚¿AƒGƒlƒ‹ƒM[‚ªˆê’è’lˆÈ‰º‚Ì‚à‚Ì‚ğ
-		//‘S‚ÄƒtƒBƒbƒgƒlƒXŠÖ”‚Ì’l‚Æ‡‚í‚¹‚ÄŠi”[‚·‚éB
+		//Sã‹ã‚‰ãƒãƒŸãƒ³ã‚°è·é›¢1é•ã†æ§‹é€ ãŸã¡ã®ã†ã¡ã€ã‚¨ãƒãƒ«ã‚®ãƒ¼ãŒä¸€å®šå€¤ä»¥ä¸‹ã®ã‚‚ã®ã‚’
+		//å…¨ã¦ãƒ•ã‚£ãƒƒãƒˆãƒã‚¹é–¢æ•°ã®å€¤ã¨åˆã‚ã›ã¦æ ¼ç´ã™ã‚‹ã€‚
 		std::vector<std::pair<double, std::string>>low_energy_neighbors;
 		for (const auto x : EnumerateNeighborsWithoutTabu(sequence, S, count, tabu)) {
 			if (EnergyOfStructure(sequence, x) <= energy_upper_bound) {
@@ -101,10 +101,10 @@ Dotu2010TabuIndirect(
 			}
 		}
 
-		//‘JˆÚ‰Â”\‚È\‘¢‚ª‘¶İ‚µ‚È‚¢ê‡Atabu‰–Šî‘Î‚ª•œŠˆ‚·‚é‚Ü‚Å‘Ò‚ÂB
+		//é·ç§»å¯èƒ½ãªæ§‹é€ ãŒå­˜åœ¨ã—ãªã„å ´åˆã€tabuå¡©åŸºå¯¾ãŒå¾©æ´»ã™ã‚‹ã¾ã§å¾…ã¤ã€‚
 		if (low_energy_neighbors.size() == 0)continue;
 
-		//ƒtƒBƒbƒgƒlƒXŠÖ”‚Ì•]‰¿’l‚ª’á‚¢kŒÂ‚Ì‚È‚©‚©‚çƒ‰ƒ“ƒ_ƒ€‚É‘I‚Ñ‘JˆÚ‚·‚éB
+		//ãƒ•ã‚£ãƒƒãƒˆãƒã‚¹é–¢æ•°ã®è©•ä¾¡å€¤ãŒä½ã„kå€‹ã®ãªã‹ã‹ã‚‰ãƒ©ãƒ³ãƒ€ãƒ ã«é¸ã³é·ç§»ã™ã‚‹ã€‚
 		std::sort(low_energy_neighbors.begin(), low_energy_neighbors.end());
 		std::uniform_int_distribution<int>dist(0, std::min<int>(k, low_energy_neighbors.size()) - 1);
 		const auto nextS = low_energy_neighbors[dist(rnd)].second;
@@ -112,44 +112,44 @@ Dotu2010TabuIndirect(
 		assert(tabu[diff.first][diff.second] <= count);
 		S = nextS;
 		pathway.push_back(S);
-		tabu[diff.first][diff.second] = count + tabu_tenure(rnd);//æsŒ¤‹†‚ÌÀ‘•‚É‡‚í‚¹‚½B
+		tabu[diff.first][diff.second] = count + tabu_tenure(rnd);//å…ˆè¡Œç ”ç©¶ã®å®Ÿè£…ã«åˆã‚ã›ãŸã€‚
 		max_energy = std::max<double>(max_energy, EnergyOfStructure(sequence, S));
 		/*HEAVY*/assert(IsValidPathway(structure1, S, pathway));
 
-		//¡‚Ü‚Å‚Åˆê”ÔƒS[ƒ‹‚É‹ß‚­‚È‚Á‚½‚©‚Ç‚¤‚©‚Åê‡•ª‚¯
+		//ä»Šã¾ã§ã§ä¸€ç•ªã‚´ãƒ¼ãƒ«ã«è¿‘ããªã£ãŸã‹ã©ã†ã‹ã§å ´åˆåˆ†ã‘
 		const int hamming_distance = HammingDistance(S, structure2);
 		if (hamming_distance < best_distance) {
 			best_distance = hamming_distance;
 			closest_structure = S;
 			closest_time = pathway.size();
-			w = std::max<double>(w_0, w / 1.2);//æsŒ¤‹†‚ÌÀ‘•‚É‡‚í‚¹‚½B
+			w = std::max<double>(w_0, w / 1.2);//å…ˆè¡Œç ”ç©¶ã®å®Ÿè£…ã«åˆã‚ã›ãŸã€‚
 			no_improvement_count = 0;
 		}
 		else {
 			no_improvement_count++;
 			if (no_improvement_count > max_stable) {
 
-				//ˆê’è‰ñ”’â‘Ø‚µ‚½‚çAˆê”ÔƒS[ƒ‹‚É‹ß‚©‚Á‚½\‘¢‚ÉŠª‚«–ß‚·B
+				//ä¸€å®šå›æ•°åœæ»ã—ãŸã‚‰ã€ä¸€ç•ªã‚´ãƒ¼ãƒ«ã«è¿‘ã‹ã£ãŸæ§‹é€ ã«å·»ãæˆ»ã™ã€‚
 
 				S = closest_structure;
 				pathway.resize(closest_time);
 				/*HEAVY*/assert(IsValidPathway(structure1, S, pathway));
 				for (int i = 0; i < n; ++i)for (int j = 0; j < n; ++j)tabu[i][j] = 0;
-				w *= 2;//æsŒ¤‹†‚ÌÀ‘•‚É‡‚í‚¹‚½B
+				w *= 2;//å…ˆè¡Œç ”ç©¶ã®å®Ÿè£…ã«åˆã‚ã›ãŸã€‚
 				no_improvement_count = 0;
 
 				if (w > 10.0 * w_init) {
 
-					//’â‘Ø‚µ‚ÄŠª‚«–ß‚·‚ª‰ü‘P‚µ‚È‚¢‚Æ‚¢‚¤‚Ì‚ğˆê’è‰ñ”ŒJ‚è•Ô‚µ‚½‚çA
-					//Å‰‚Ì\‘¢‚ÉŠª‚«–ß‚·B
+					//åœæ»ã—ã¦å·»ãæˆ»ã™ãŒæ”¹å–„ã—ãªã„ã¨ã„ã†ã®ã‚’ä¸€å®šå›æ•°ç¹°ã‚Šè¿”ã—ãŸã‚‰ã€
+					//æœ€åˆã®æ§‹é€ ã«å·»ãæˆ»ã™ã€‚
 
 					S = structure1;
 					pathway.resize(1);
 					for (int i = 0; i < n; ++i)for (int j = 0; j < n; ++j)tabu[i][j] = 0;
-					w_init += 0.5;//æsŒ¤‹†‚ÌÀ‘•‚É‡‚í‚¹‚½B
+					w_init += 0.5;//å…ˆè¡Œç ”ç©¶ã®å®Ÿè£…ã«åˆã‚ã›ãŸã€‚
 					w = w_init;
 
-					//ˆÈ‰º‚Ì3s‚Í˜_•¶‚É‚Í‘‚©‚ê‚Ä‚¢‚È‚¢‚ªDotu et al.,‚ÌÀ‘•‚É‚Í‚ ‚éB•K{B
+					//ä»¥ä¸‹ã®3è¡Œã¯è«–æ–‡ã«ã¯æ›¸ã‹ã‚Œã¦ã„ãªã„ãŒDotu et al.,ã®å®Ÿè£…ã«ã¯ã‚ã‚‹ã€‚å¿…é ˆã€‚
 
 					closest_structure = structure1;
 					closest_time = 1;
@@ -160,8 +160,8 @@ Dotu2010TabuIndirect(
 	}
 
 	if (S != structure2) {
-		//energy_upper_bound‚ª’á‚·‚¬‚½‚©A
-		//w_0‚ª¬‚³‚·‚¬‚Äû‘©‚·‚é‘O‚Écount‚ªƒI[ƒo[‚µ‚½B
+		//energy_upper_boundãŒä½ã™ããŸã‹ã€
+		//w_0ãŒå°ã•ã™ãã¦åæŸã™ã‚‹å‰ã«countãŒã‚ªãƒ¼ãƒãƒ¼ã—ãŸã€‚
 		return make_pair(std::vector<std::string>{}, std::numeric_limits<double>::infinity());
 	}
 

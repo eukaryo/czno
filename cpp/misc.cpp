@@ -1,6 +1,6 @@
-/*
+ï»¿/*
 GNU GPL v2
-Copyright (c) 2019 Hiroki Takizawa
+Copyright (c) 2020 Hiroki Takizawa
 */
 
 #include "misc.h"
@@ -136,7 +136,7 @@ double BarrierEnergy(
 	return answer;
 }
 std::pair<int, int>Difference(const std::string& structure1, const std::string& structure2) {
-	//ƒnƒ~ƒ“ƒO‹——£1‚Ì2\‘¢‚ğó‚¯æ‚Á‚ÄAˆá‚¤‰–Šî‘Î1ŒÂ‚ğ“Á’è‚µ‚Ä•Ô‚·B
+	//ãƒãƒŸãƒ³ã‚°è·é›¢1ã®2æ§‹é€ ã‚’å—ã‘å–ã£ã¦ã€é•ã†å¡©åŸºå¯¾1å€‹ã‚’ç‰¹å®šã—ã¦è¿”ã™ã€‚
 	assert(HammingDistance(structure1, structure2) == 1);
 	std::pair<int, int>answer = std::make_pair(-1, -1);
 	for (int i = 0; i < structure1.size(); ++i)if (structure1[i] != structure2[i]) {

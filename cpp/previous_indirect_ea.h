@@ -1,6 +1,6 @@
-/*
+ï»¿/*
 GNU GPL v2
-Copyright (c) 2019 Hiroki Takizawa
+Copyright (c) 2020 Hiroki Takizawa
 */
 
 #ifndef PREVIOUS_INDIRECT_EA_H_
@@ -29,11 +29,11 @@ LiZhang2012RNAEAPathIndirect(
 	const std::string& sequence,
 	const std::string& structure1,
 	const std::string& structure2,
-	const int initial_population,//Å‰‚É“K“–‚Éì‚éƒpƒX‚Ì”B4
-	const int gamma_generation,//I—¹ğŒ‚ÉŠÖ‚í‚éƒÁ 5
-	const int max_generation,//I—¹ğŒ‚ÉŠÖ‚í‚éMAX 10
-	const int script_capital_l,//q‹Ÿ‚Ì”‚ÉŠÖ‚í‚éA100
-	const int l1_elite_population,//ƒGƒŠ[ƒg‚Ì”A5
+	const int initial_population,//æœ€åˆã«é©å½“ã«ä½œã‚‹ãƒ‘ã‚¹ã®æ•°ã€‚4
+	const int gamma_generation,//çµ‚äº†æ¡ä»¶ã«é–¢ã‚ã‚‹Î³ 5
+	const int max_generation,//çµ‚äº†æ¡ä»¶ã«é–¢ã‚ã‚‹MAX 10
+	const int script_capital_l,//å­ä¾›ã®æ•°ã«é–¢ã‚ã‚‹ã€100
+	const int l1_elite_population,//ã‚¨ãƒªãƒ¼ãƒˆã®æ•°ã€5
 	const int l2_survive_population,// 5
 	const int l3_final_max_population,// 100
 	const int random_seed);

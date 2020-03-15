@@ -1,6 +1,6 @@
-/*
+ï»¿/*
 GNU GPL v2
-Copyright (c) 2019 Hiroki Takizawa
+Copyright (c) 2020 Hiroki Takizawa
 */
 
 #include "enumerate_long_stacks.h"
@@ -15,14 +15,14 @@ EnumerateLongStacksBruteForce(
 	const std::set<std::pair<int, int>>& structure,
 	const int minimum_length,
 	const bool need_compatible) {
-	//sequenceã‚Å‚Ì’·‚³minimum_lengthˆÈã‚Ì˜A‘±‚·‚é‰–Šî‘Î(stack)‚ğA
-	//“ñŸ\‘¢structure‚É‘¦À‚É’Ç‰Á‚Å‚«‚é(compatible)‚©‚Ç‚¤‚©‚Å•ª—Ş‚µ‚ÄA•Ğ•û‚ğ•Ô‚·B
-	//need_compatible==true‚È‚çAcompatible‚Èstack‚ğ•Ô‚·B
-	//need_compatible==false‚È‚çAincompatible‚Èstack‚ğ•Ô‚·B
-	//brute force‚ÉŒvZ‚·‚éB
-	//Šestack’†‚É‰–Šî‘Î‚ÍO(N)ŒÂ‚ ‚èAstructure’†‚É‰–Šî‘Î‚ÍO(N)ŒÂ‚ ‚é‚Ì‚ÅA
-	//ˆê‚Â‚Ìstack‚ªcompatible‚©‚Ç‚¤‚©‚Ì”»’è‚É‚ÍO(N^2)‚©‚©‚éB
-	//stack‚ÍO(N^3)ŒÂ‚ ‚é‚©‚çAƒg[ƒ^ƒ‹‚ÌŠÔŒvZ—Ê‚ÍO(N^5)‚Å‚ ‚éB
+	//sequenceä¸Šã§ã®é•·ã•minimum_lengthä»¥ä¸Šã®é€£ç¶šã™ã‚‹å¡©åŸºå¯¾(stack)ã‚’ã€
+	//äºŒæ¬¡æ§‹é€ structureã«å³åº§ã«è¿½åŠ ã§ãã‚‹(compatible)ã‹ã©ã†ã‹ã§åˆ†é¡ã—ã¦ã€ç‰‡æ–¹ã‚’è¿”ã™ã€‚
+	//need_compatible==trueãªã‚‰ã€compatibleãªstackã‚’è¿”ã™ã€‚
+	//need_compatible==falseãªã‚‰ã€incompatibleãªstackã‚’è¿”ã™ã€‚
+	//brute forceã«è¨ˆç®—ã™ã‚‹ã€‚
+	//å„stackä¸­ã«å¡©åŸºå¯¾ã¯O(N)å€‹ã‚ã‚Šã€structureä¸­ã«å¡©åŸºå¯¾ã¯O(N)å€‹ã‚ã‚‹ã®ã§ã€
+	//ä¸€ã¤ã®stackãŒcompatibleã‹ã©ã†ã‹ã®åˆ¤å®šã«ã¯O(N^2)ã‹ã‹ã‚‹ã€‚
+	//stackã¯O(N^3)å€‹ã‚ã‚‹ã‹ã‚‰ã€ãƒˆãƒ¼ã‚¿ãƒ«ã®æ™‚é–“è¨ˆç®—é‡ã¯O(N^5)ã§ã‚ã‚‹ã€‚
 
 	const static std::regex rna(R"([ACGU]+)");
 	assert(std::regex_match(sequence, rna));
@@ -36,7 +36,7 @@ EnumerateLongStacksBruteForce(
 		}
 	}
 
-	//stack‚ğ‘S—ñ‹“‚·‚éB
+	//stackã‚’å…¨åˆ—æŒ™ã™ã‚‹ã€‚
 	std::vector<std::array<int, 4>>all_long_stacks;
 	for (int i = 0; i < n - TURN - 1; ++i) {
 		for (int j = i + TURN + 1; j < n; ++j) {
@@ -48,7 +48,7 @@ EnumerateLongStacksBruteForce(
 		}
 	}
 
-	//Šestack‚Ìcompatibility‚ğ”»’è‚µ‚ÄA—~‚µ‚¢•û‚ğW‚ß‚éB
+	//å„stackã®compatibilityã‚’åˆ¤å®šã—ã¦ã€æ¬²ã—ã„æ–¹ã‚’é›†ã‚ã‚‹ã€‚
 	std::vector<std::array<int, 4>>answer;
 	for (const auto s : all_long_stacks) {
 		bool compatibility = true;
@@ -83,9 +83,9 @@ EnumerateLongStacks(
 
 	std::vector<std::vector<int>>incompatible_flag(n + 1, std::vector<int>(n + 1, 0));
 	for (const auto bp : structure) {
-		//‰–Šî‘Î(i,j)‚ª‘¶İ‚·‚é‚Æ‚«A
-		//[(0,0),(i,j)]‚Ì‹éŒ`‹æŠÔ‚Æ[(i,j),(n-1,n-1)]‚Ì‹éŒ`‹æŠÔ‚É1ˆÈã‚Ì’l‚ğ‰ÁZ‚·‚éB
-		//‚¢‚à‚·–@‚Å’[‚Ì4‰ÓŠ‚¾‚¯‰ÁZ‚·‚éB
+		//å¡©åŸºå¯¾(i,j)ãŒå­˜åœ¨ã™ã‚‹ã¨ãã€
+		//[(0,0),(i,j)]ã®çŸ©å½¢åŒºé–“ã¨[(i,j),(n-1,n-1)]ã®çŸ©å½¢åŒºé–“ã«1ä»¥ä¸Šã®å€¤ã‚’åŠ ç®—ã™ã‚‹ã€‚
+		//ã„ã‚‚ã™æ³•ã§ç«¯ã®4ç®‡æ‰€ã ã‘åŠ ç®—ã™ã‚‹ã€‚
 		++incompatible_flag[0][0];
 		--incompatible_flag[0][bp.second + 1];
 		--incompatible_flag[bp.first + 1][0];
@@ -96,7 +96,7 @@ EnumerateLongStacks(
 		++incompatible_flag[n][n];
 	}
 
-	//‚¢‚à‚·–@‚Ì—İÏ˜a‚ğæ‚éˆ—
+	//ã„ã‚‚ã™æ³•ã®ç´¯ç©å’Œã‚’å–ã‚‹å‡¦ç†
 	for (int i = 0; i <= n; i++) {
 		for (int j = 1; j <= n; j++) {
 			incompatible_flag[i][j] += incompatible_flag[i][j - 1];
@@ -108,9 +108,9 @@ EnumerateLongStacks(
 		}
 	}
 
-	//‚±‚Ì“_‚ÅA
-	//incompatible_flag[i][j] > 0 Ì ‰–Šî‘Î(i,j)‚Æstructure‚Æ‚Íincompatible
-	//‚Å‚ ‚éB
+	//ã“ã®æ™‚ç‚¹ã§ã€
+	//incompatible_flag[i][j] > 0 â‡” å¡©åŸºå¯¾(i,j)ã¨structureã¨ã¯incompatible
+	//ã§ã‚ã‚‹ã€‚
 
 	std::vector<std::vector<int>>is_valid_bp(n + 1, std::vector<int>(n + 1, 0));
 	for (int i = 0; i < n - TURN - 1; ++i) {

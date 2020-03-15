@@ -1,6 +1,6 @@
-/*
+﻿/*
 GNU GPL v2
-Copyright (c) 2019 Hiroki Takizawa
+Copyright (c) 2020 Hiroki Takizawa
 */
 #ifndef ENUMERATE_LONG_STACKS_H_
 #define ENUMERATE_LONG_STACKS_H_

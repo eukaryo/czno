@@ -1,6 +1,6 @@
-/*
+ï»¿/*
 GNU GPL v2
-Copyright (c) 2019 Hiroki Takizawa
+Copyright (c) 2020 Hiroki Takizawa
 */
 
 #include "czno_proposed_methods.h"
@@ -82,11 +82,11 @@ MinimumBarrierDirectPathDijkstra1(
 			for (int j = 0; j < hamming_distance; ++j) {
 				if (need_to_open[d][j] != 0)continue;
 
-				//‚±‚Ì“_‚ÅA
-				//basepair_difference[d][i]‚Ístart‚É‚ ‚Á‚Ägoal‚É‚È‚¢A‚·‚È‚í‚¿ƒpƒXã‚ÅŠO‚³‚ê‚é‚×‚«‰–Šî‘Î‚Å‚ ‚èA
-				//basepair_difference[d][j]‚Ígoal‚É‚ ‚Á‚Ästart‚É‚È‚¢A‚·‚È‚í‚¿ƒpƒXã‚Å‘g‚Ü‚ê‚é‚×‚«‰–Šî‘Î‚Å‚ ‚éB
-				//‚±‚±‚Å‚à‚µ[i]‚ğŠO‚µ‚Ä‚©‚ç‚Å‚È‚¢‚Æ[j]‚ğ‘g‚ß‚È‚¢‚Æ‚¢‚¤ˆË‘¶ŠÖŒW‚ª‚ ‚é‚È‚çA
-				//prerequisite_flag[d][j] |= 1 << i ‚Æ‚·‚éB
+				//ã“ã®æ™‚ç‚¹ã§ã€
+				//basepair_difference[d][i]ã¯startã«ã‚ã£ã¦goalã«ãªã„ã€ã™ãªã‚ã¡ãƒ‘ã‚¹ä¸Šã§å¤–ã•ã‚Œã‚‹ã¹ãå¡©åŸºå¯¾ã§ã‚ã‚Šã€
+				//basepair_difference[d][j]ã¯goalã«ã‚ã£ã¦startã«ãªã„ã€ã™ãªã‚ã¡ãƒ‘ã‚¹ä¸Šã§çµ„ã¾ã‚Œã‚‹ã¹ãå¡©åŸºå¯¾ã§ã‚ã‚‹ã€‚
+				//ã“ã“ã§ã‚‚ã—[i]ã‚’å¤–ã—ã¦ã‹ã‚‰ã§ãªã„ã¨[j]ã‚’çµ„ã‚ãªã„ã¨ã„ã†ä¾å­˜é–¢ä¿‚ãŒã‚ã‚‹ãªã‚‰ã€
+				//prerequisite_flag[d][j] |= 1 << i ã¨ã™ã‚‹ã€‚
 
 				if (IsExclusive(basepair_difference[i], basepair_difference[j])) {
 					prerequisite_flag[d][j] |= 1 << i;
@@ -95,18 +95,18 @@ MinimumBarrierDirectPathDijkstra1(
 		}
 	}
 
-	//ƒXƒ^[ƒg\‘¢‚©‚ç\‘¢x‚Ü‚Å‚Ì•”•ª‰ğB
+	//ã‚¹ã‚¿ãƒ¼ãƒˆæ§‹é€ ã‹ã‚‰æ§‹é€ xã¾ã§ã®éƒ¨åˆ†è§£ã€‚
 	std::array<std::vector<double>, 2>result{ std::vector<double>(1 << hamming_distance, std::numeric_limits<double>::infinity()),std::vector<double>(1 << hamming_distance, std::numeric_limits<double>::infinity()) };
 
-	//\‘¢x‚ÌƒGƒlƒ‹ƒM[‚Ì’l
+	//æ§‹é€ xã®ã‚¨ãƒãƒ«ã‚®ãƒ¼ã®å€¤
 	std::vector<double>energy(1 << hamming_distance, std::numeric_limits<double>::infinity());
 
-	//Result‚ªŠm’è‚µ‚½‚©‚Ç‚¤‚©
+	//ResultãŒç¢ºå®šã—ãŸã‹ã©ã†ã‹
 	std::vector<int>searched(1 << hamming_distance, 0);
 
-	//DNode‚Í(ƒXƒ^[ƒg\‘¢‚©‚ç‚»‚Ì\‘¢‚Ü‚Å‚ÌƒoƒŠƒA’lA(-A‚»‚Ì\‘¢‚Ì“Yš))‚Æ‚·‚éB
-	//"-"‚ğ“ü‚ê‚é——R‚ÍAƒoƒŠƒA’l‚ª“¯‚¶ê‡‚ÉŒã“ü‚êæo‚µ‚É‚µ‚½‚¢‚©‚çB
-	//\‘¢‚Ì“Yš‚Æ‚ÍA‚·‚×‚Ä‚Ì‰Â”\‚È’†ŠÔ\‘¢‚ğBitDP“I‚É“Yš•t‚¯‚µ‚½‚à‚Ì‚Æ‚·‚éB
+	//DNodeã¯(ã‚¹ã‚¿ãƒ¼ãƒˆæ§‹é€ ã‹ã‚‰ãã®æ§‹é€ ã¾ã§ã®ãƒãƒªã‚¢å€¤ã€(-æ™‚åˆ»ã€ãã®æ§‹é€ ã®æ·»å­—))ã¨ã™ã‚‹ã€‚
+	//"-æ™‚åˆ»"ã‚’å…¥ã‚Œã‚‹ç†ç”±ã¯ã€ãƒãƒªã‚¢å€¤ãŒåŒã˜å ´åˆã«å¾Œå…¥ã‚Œå…ˆå‡ºã—ã«ã—ãŸã„ã‹ã‚‰ã€‚
+	//æ§‹é€ ã®æ·»å­—ã¨ã¯ã€ã™ã¹ã¦ã®å¯èƒ½ãªä¸­é–“æ§‹é€ ã‚’BitDPçš„ã«æ·»å­—ä»˜ã‘ã—ãŸã‚‚ã®ã¨ã™ã‚‹ã€‚
 	typedef std::pair<double, std::pair<int, int>> DNode;
 	typedef std::priority_queue<DNode, std::vector<DNode>, std::greater<DNode>> DQueue;
 
@@ -125,7 +125,7 @@ MinimumBarrierDirectPathDijkstra1(
 	double upper_bound = std::numeric_limits<double>::infinity();
 	int ub_universal_position = -1;
 
-	//fine_grained”Å‚É‚¨‚¢‚Ä‚ÍƒRƒ“ƒeƒLƒXƒgƒXƒCƒbƒ`‚·‚é‚½‚ß‘S‚Ä‚Ìƒ[ƒJƒ‹•Ï”‚ğ‚±‚±‚ÅéŒ¾‚·‚é•K—v‚ª‚ ‚éB
+	//fine_grainedç‰ˆã«ãŠã„ã¦ã¯ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã‚¹ã‚¤ãƒƒãƒã™ã‚‹ãŸã‚å…¨ã¦ã®ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ã‚’ã“ã“ã§å®£è¨€ã™ã‚‹å¿…è¦ãŒã‚ã‚‹ã€‚
 	std::array<DNode, 2>x_;
 	std::array<int, 2>b_;
 	std::array<int, 2>i_;
@@ -147,21 +147,21 @@ MinimumBarrierDirectPathDijkstra1(
 		directional_structure_index_[direction] = universal_structure_index_[direction] ^ (((1 << hamming_distance) - 1) * direction);
 		assert(x_[direction].first <= upper_bound);
 
-		//^‚ÌƒoƒŠƒAƒGƒlƒ‹ƒM[‚ÍApriority_queue‚©‚çæ‚èo‚µ‚½’lˆÈã‚Å‚ ‚éB
-		//‚±‚ê‚Í‚Ç‚¿‚ç‚Ìpriority_queue‚©‚çæ‚èo‚µ‚½’l‚Å‚ ‚Á‚Ä‚àí‚É¬‚è—§‚ÂB
-		//——R‚Ípriority_queue‚©‚ço‚Ä‚­‚é‡”Ô‚ªƒoƒŠƒA’l‚Ì’á‚¢‡‚Å‚ ‚é‚±‚Æ‚Æmin-max‘ã”‚Å‚ ‚é‚±‚Æ‚É‚æ‚éB
+		//çœŸã®ãƒãƒªã‚¢ã‚¨ãƒãƒ«ã‚®ãƒ¼ã¯ã€priority_queueã‹ã‚‰å–ã‚Šå‡ºã—ãŸå€¤ä»¥ä¸Šã§ã‚ã‚‹ã€‚
+		//ã“ã‚Œã¯ã©ã¡ã‚‰ã®priority_queueã‹ã‚‰å–ã‚Šå‡ºã—ãŸå€¤ã§ã‚ã£ã¦ã‚‚å¸¸ã«æˆã‚Šç«‹ã¤ã€‚
+		//ç†ç”±ã¯priority_queueã‹ã‚‰å‡ºã¦ãã‚‹é †ç•ªãŒãƒãƒªã‚¢å€¤ã®ä½ã„é †ã§ã‚ã‚‹ã“ã¨ã¨min-maxä»£æ•°ã§ã‚ã‚‹ã“ã¨ã«ã‚ˆã‚‹ã€‚
 		lower_bound = std::max<double>(lower_bound, x_[direction].first);
 
-		//^‚ÌƒoƒŠƒAƒGƒlƒ‹ƒM[‚ªupper_bound‚É“™‚µ‚¢‚±‚Æ‚ªŠm’è‚µ‚½‚çA‚ ‚Æ‚Íub_universal_position‚©‚ç—¼‘¤‚ÉƒgƒŒ[ƒXƒoƒbƒN‚·‚ê‚Î‚æ‚¢B
+		//çœŸã®ãƒãƒªã‚¢ã‚¨ãƒãƒ«ã‚®ãƒ¼ãŒupper_boundã«ç­‰ã—ã„ã“ã¨ãŒç¢ºå®šã—ãŸã‚‰ã€ã‚ã¨ã¯ub_universal_positionã‹ã‚‰ä¸¡å´ã«ãƒˆãƒ¬ãƒ¼ã‚¹ãƒãƒƒã‚¯ã™ã‚Œã°ã‚ˆã„ã€‚
 		if (lower_bound == upper_bound)return 1;
 
-		//«‚Ìif•¶‚ª¬—§‚·‚éó‹µ‚É‚¨‚¢‚Ä‚ÍA•K‚¸ª‚Ì(lower_bound == upper_bound)‚ª¬—§‚µ‚Ä‚¢‚é‚½‚ßA«‚Í•s—v‚Å‚ ‚éB
-		//‚È‚º‚È‚çAŒ»İ‚Ìƒm[ƒh‚ÉŠÖ‚µ‚ÄA
-		//(1)—¼Ò‚ª‚±‚ê‚ğ”­Œ©‚µ‚Äupper_bound‚ªXV‚³‚ê‚éƒ^ƒCƒ~ƒ“ƒO@‚Æ
-		//(2)‚Ç‚¿‚ç‚©•Ğ•û‚ª‚±‚ê‚ğpriority_queue‚©‚çæ‚èo‚µ‚Älower_bound‚ªXV‚³‚ê‚éƒ^ƒCƒ~ƒ“ƒO@‚Æ
-		//(3)—¼Ò‚ª‚±‚ê‚ğpriority_queue‚©‚çæ‚èo‚·ƒ^ƒCƒ~ƒ“ƒO@‚Æ‚Å‚Í
-		//•K‚¸(3)‚ªˆê”Ô’x‚¢B’x‚­‚Æ‚à(1)‚Æ(2)‚ª‚È‚³‚ê‚½“_‚Å^‚Ì‰ğ‚ªŠm’è‚µ‚Ä’TõI—¹‚·‚é‚ªA«‚Í(3)‚Ìó‹µ‚ğˆÓ–¡‚µ‚Ä‚¢‚éB
-		//‚¿‚È‚İ‚ÉAu’x‚­‚Æ‚àv‚Æ‘‚¢‚½‚ªAupper_bound‚Ælower_bound‚ª•ÊX‚Ì’n“_‚ÅŠm’è‚µ‚Ä‚à‚æ‚¢‚©‚ç‚Å‚ ‚éB
+		//â†“ã®ifæ–‡ãŒæˆç«‹ã™ã‚‹çŠ¶æ³ã«ãŠã„ã¦ã¯ã€å¿…ãšâ†‘ã®(lower_bound == upper_bound)ãŒæˆç«‹ã—ã¦ã„ã‚‹ãŸã‚ã€â†“ã¯ä¸è¦ã§ã‚ã‚‹ã€‚
+		//ãªãœãªã‚‰ã€ç¾åœ¨ã®ãƒãƒ¼ãƒ‰ã«é–¢ã—ã¦ã€
+		//(1)ä¸¡è€…ãŒã“ã‚Œã‚’ç™ºè¦‹ã—ã¦upper_boundãŒæ›´æ–°ã•ã‚Œã‚‹ã‚¿ã‚¤ãƒŸãƒ³ã‚°ã€€ã¨
+		//(2)ã©ã¡ã‚‰ã‹ç‰‡æ–¹ãŒã“ã‚Œã‚’priority_queueã‹ã‚‰å–ã‚Šå‡ºã—ã¦lower_boundãŒæ›´æ–°ã•ã‚Œã‚‹ã‚¿ã‚¤ãƒŸãƒ³ã‚°ã€€ã¨
+		//(3)ä¸¡è€…ãŒã“ã‚Œã‚’priority_queueã‹ã‚‰å–ã‚Šå‡ºã™ã‚¿ã‚¤ãƒŸãƒ³ã‚°ã€€ã¨ã§ã¯
+		//å¿…ãš(3)ãŒä¸€ç•ªé…ã„ã€‚é…ãã¨ã‚‚(1)ã¨(2)ãŒãªã•ã‚ŒãŸæ™‚ç‚¹ã§çœŸã®è§£ãŒç¢ºå®šã—ã¦æ¢ç´¢çµ‚äº†ã™ã‚‹ãŒã€â†“ã¯(3)ã®çŠ¶æ³ã‚’æ„å‘³ã—ã¦ã„ã‚‹ã€‚
+		//ã¡ãªã¿ã«ã€ã€Œé…ãã¨ã‚‚ã€ã¨æ›¸ã„ãŸãŒã€upper_boundã¨lower_boundãŒåˆ¥ã€…ã®åœ°ç‚¹ã§ç¢ºå®šã—ã¦ã‚‚ã‚ˆã„ã‹ã‚‰ã§ã‚ã‚‹ã€‚
 		//if (searched[universal_structure_index] & (1 << (1 - direction)))return 0;
 
 		searched[universal_structure_index_[direction]] |= (1 << direction);
@@ -172,9 +172,9 @@ MinimumBarrierDirectPathDijkstra1(
 			new_directional_structure_index_[direction] = directional_structure_index_[direction] | b_[direction];
 			new_universal_structure_index_[direction] = new_directional_structure_index_[direction] ^ (((1 << hamming_distance) - 1) * direction);
 
-			//©•ª‚Ìo”­“_‚©‚ç‚ ‚éƒm[ƒh‚És‚­‚Ì‚É•K—v‚ÈƒoƒŠƒA‚ÍA‚»‚Ìƒm[ƒh‚ğÅ‰‚É”­Œ©‚µ‚½“_‚ÅŠm’è‚·‚éB
-			//——R‚ÍDijkstra–@‚Å‚ ‚é‚±‚Æ‚Æmin-max‘ã”‚Å‚ ‚é‚±‚Æ‚É‚æ‚è©–¾‚Å‚ ‚éB
-			//‚ä‚¦‚ÉA©•ª‚ª‚©‚Â‚Ä”­Œ©‚µ‚½‚±‚Æ‚Ì‚ ‚éƒm[ƒh‚ğÄ”­Œ©‚µ‚½ê‡Acontinue‚µ‚Ä‚à‚æ‚¢B
+			//è‡ªåˆ†ã®å‡ºç™ºç‚¹ã‹ã‚‰ã‚ã‚‹ãƒãƒ¼ãƒ‰ã«è¡Œãã®ã«å¿…è¦ãªãƒãƒªã‚¢ã¯ã€ãã®ãƒãƒ¼ãƒ‰ã‚’æœ€åˆã«ç™ºè¦‹ã—ãŸæ™‚ç‚¹ã§ç¢ºå®šã™ã‚‹ã€‚
+			//ç†ç”±ã¯Dijkstraæ³•ã§ã‚ã‚‹ã“ã¨ã¨min-maxä»£æ•°ã§ã‚ã‚‹ã“ã¨ã«ã‚ˆã‚Šè‡ªæ˜ã§ã‚ã‚‹ã€‚
+			//ã‚†ãˆã«ã€è‡ªåˆ†ãŒã‹ã¤ã¦ç™ºè¦‹ã—ãŸã“ã¨ã®ã‚ã‚‹ãƒãƒ¼ãƒ‰ã‚’å†ç™ºè¦‹ã—ãŸå ´åˆã€continueã—ã¦ã‚‚ã‚ˆã„ã€‚
 			if (result[direction][new_universal_structure_index_[direction]] != std::numeric_limits<double>::infinity())continue;
 
 			if (fine_grained)f_[direction] = 0;
@@ -192,12 +192,12 @@ MinimumBarrierDirectPathDijkstra1(
 			}
 			if (result[1 - direction][new_universal_structure_index_[direction]] != std::numeric_limits<double>::infinity()) {
 
-				//ˆê•û‚Ì‘¤‚©‚ç’Tõ‚µ‚Ä‚¢‚Á‚ÄA‹t‘¤‚ª”­Œ©Ï‚İ‚Ìƒm[ƒh‚ğ”­Œ©‚µ‚½‚Æ‚·‚éB
-				//©•ª‚Ìresult‚Ì‚Ù‚¤‚ª’á‚¢ê‡F
-				//@@‘Šè‚àDijkstra–@‚Å‚ ‚é‚±‚Æ‚©‚çA¡”­Œ©‚µ‚½ƒm[ƒh‚©‚ç‘Šè‚Ìo”­“_‚És‚­‚Ì‚É•K—v‚ÈƒoƒŠƒA‚Í‘Šè‚Ìresult‚ÅŠÔˆá‚¢‚È‚¢B
-				//‘Šè‚Ìresult‚Ì‚Ù‚¤‚ª’á‚¢ê‡F
-				//@@©•ª‚ÍDijkstra–@‚Å‚ ‚é‚±‚Æ‚©‚çA¡”­Œ©‚µ‚½ƒm[ƒh‚©‚ç©•ª‚Ìo”­“_‚És‚­‚Ì‚É•K—v‚ÈƒoƒŠƒA‚Í©•ª‚Ìresult‚ÅŠÔˆá‚¢‚È‚¢B
-				//Œ‹‹ÇA”­Œ©‚µ‚½ƒm[ƒh‚ğ’Ê‚éê‡‚ÌƒoƒŠƒAƒGƒlƒ‹ƒM[‚ÍA¡”­Œ©‚µ‚½ƒm[ƒh‚É‚¨‚¯‚é©•ª‚Ìresult‚Æ‘Šè‚Ìresult‚Ì‚Ç‚¿‚ç‚©ˆ«‚¢‚Ù‚¤‚ÅŠÔˆá‚¢‚È‚¢B
+				//ä¸€æ–¹ã®å´ã‹ã‚‰æ¢ç´¢ã—ã¦ã„ã£ã¦ã€é€†å´ãŒç™ºè¦‹æ¸ˆã¿ã®ãƒãƒ¼ãƒ‰ã‚’ç™ºè¦‹ã—ãŸã¨ã™ã‚‹ã€‚
+				//è‡ªåˆ†ã®resultã®ã»ã†ãŒä½ã„å ´åˆï¼š
+				//ã€€ã€€ç›¸æ‰‹ã‚‚Dijkstraæ³•ã§ã‚ã‚‹ã“ã¨ã‹ã‚‰ã€ä»Šç™ºè¦‹ã—ãŸãƒãƒ¼ãƒ‰ã‹ã‚‰ç›¸æ‰‹ã®å‡ºç™ºç‚¹ã«è¡Œãã®ã«å¿…è¦ãªãƒãƒªã‚¢ã¯ç›¸æ‰‹ã®resultã§é–“é•ã„ãªã„ã€‚
+				//ç›¸æ‰‹ã®resultã®ã»ã†ãŒä½ã„å ´åˆï¼š
+				//ã€€ã€€è‡ªåˆ†ã¯Dijkstraæ³•ã§ã‚ã‚‹ã“ã¨ã‹ã‚‰ã€ä»Šç™ºè¦‹ã—ãŸãƒãƒ¼ãƒ‰ã‹ã‚‰è‡ªåˆ†ã®å‡ºç™ºç‚¹ã«è¡Œãã®ã«å¿…è¦ãªãƒãƒªã‚¢ã¯è‡ªåˆ†ã®resultã§é–“é•ã„ãªã„ã€‚
+				//çµå±€ã€ç™ºè¦‹ã—ãŸãƒãƒ¼ãƒ‰ã‚’é€šã‚‹å ´åˆã®ãƒãƒªã‚¢ã‚¨ãƒãƒ«ã‚®ãƒ¼ã¯ã€ä»Šç™ºè¦‹ã—ãŸãƒãƒ¼ãƒ‰ã«ãŠã‘ã‚‹è‡ªåˆ†ã®resultã¨ç›¸æ‰‹ã®resultã®ã©ã¡ã‚‰ã‹æ‚ªã„ã»ã†ã§é–“é•ã„ãªã„ã€‚
 
 				barrier_if_passing_here_[direction] = std::max<double>(result[direction][new_universal_structure_index_[direction]], result[1 - direction][new_universal_structure_index_[direction]]);
 				if (barrier_if_passing_here_[direction] < upper_bound) {
@@ -229,7 +229,7 @@ MinimumBarrierDirectPathDijkstra1(
 	const int meeting_position = ub_universal_position;
 	const std::string meeting_structure = DotNotation(meeting_position);
 
-	//‰ï‡“_‚©‚çAEB‚Ö‚ÌƒgƒŒ[ƒXƒoƒbƒN
+	//ä¼šåˆç‚¹ã‹ã‚‰Aãƒ»Bã¸ã®ãƒˆãƒ¬ãƒ¼ã‚¹ãƒãƒƒã‚¯
 	std::vector<std::vector<std::string>>trajectory(2, std::vector<std::string>{ meeting_structure });
 	const auto TraceBack = [&](const int direction) {
 		for (int universal_structure_index = meeting_position; universal_structure_index != ((1 << hamming_distance) - 1) * direction;) {
@@ -335,11 +335,11 @@ MinimumBarrierDirectPathDijkstraOld(
 		for (int j = 0; j < hamming_distance; ++j) {
 			if (need_to_open[j] != 0)continue;
 
-			//‚±‚Ì“_‚ÅA
-			//basepair_difference[i]‚ÍA‚É‚ ‚Á‚ÄB‚É‚È‚¢A‚·‚È‚í‚¿ƒpƒXã‚ÅŠO‚³‚ê‚é‚×‚«‰–Šî‘Î‚Å‚ ‚èA
-			//basepair_difference[j]‚ÍB‚É‚ ‚Á‚ÄA‚É‚È‚¢A‚·‚È‚í‚¿ƒpƒXã‚Å‘g‚Ü‚ê‚é‚×‚«‰–Šî‘Î‚Å‚ ‚éB
-			//‚±‚±‚Å‚à‚µ[i]‚ğŠO‚µ‚Ä‚©‚ç‚Å‚È‚¢‚Æ[j]‚ğ‘g‚ß‚È‚¢‚Æ‚¢‚¤ˆË‘¶ŠÖŒW‚ª‚ ‚é‚È‚çA
-			//prerequisite_flag[j] |= 1 << i ‚Æ‚·‚éB
+			//ã“ã®æ™‚ç‚¹ã§ã€
+			//basepair_difference[i]ã¯Aã«ã‚ã£ã¦Bã«ãªã„ã€ã™ãªã‚ã¡ãƒ‘ã‚¹ä¸Šã§å¤–ã•ã‚Œã‚‹ã¹ãå¡©åŸºå¯¾ã§ã‚ã‚Šã€
+			//basepair_difference[j]ã¯Bã«ã‚ã£ã¦Aã«ãªã„ã€ã™ãªã‚ã¡ãƒ‘ã‚¹ä¸Šã§çµ„ã¾ã‚Œã‚‹ã¹ãå¡©åŸºå¯¾ã§ã‚ã‚‹ã€‚
+			//ã“ã“ã§ã‚‚ã—[i]ã‚’å¤–ã—ã¦ã‹ã‚‰ã§ãªã„ã¨[j]ã‚’çµ„ã‚ãªã„ã¨ã„ã†ä¾å­˜é–¢ä¿‚ãŒã‚ã‚‹ãªã‚‰ã€
+			//prerequisite_flag[j] |= 1 << i ã¨ã™ã‚‹ã€‚
 
 			if (IsExclusive(basepair_difference[i], basepair_difference[j])) {
 				prerequisite_flag[j] |= 1 << i;
@@ -347,18 +347,18 @@ MinimumBarrierDirectPathDijkstraOld(
 		}
 	}
 
-	//ƒXƒ^[ƒg\‘¢‚©‚ç\‘¢x‚Ü‚Å‚Ì•”•ª‰ğB”z‚éDP‚ğ‚·‚é‚Ì‚ÅA‚»‚Ì“_‚Å”»–¾‚µ‚Ä‚¢‚éÅ—Ç‚Ì‰ğ‚ğ“ü‚ê‚éB
+	//ã‚¹ã‚¿ãƒ¼ãƒˆæ§‹é€ ã‹ã‚‰æ§‹é€ xã¾ã§ã®éƒ¨åˆ†è§£ã€‚é…ã‚‹DPã‚’ã™ã‚‹ã®ã§ã€ãã®æ™‚ç‚¹ã§åˆ¤æ˜ã—ã¦ã„ã‚‹æœ€è‰¯ã®è§£ã‚’å…¥ã‚Œã‚‹ã€‚
 	std::vector<double>result(1 << hamming_distance, std::numeric_limits<double>::infinity());
 
-	//\‘¢x‚ÌƒGƒlƒ‹ƒM[‚Ì’l
+	//æ§‹é€ xã®ã‚¨ãƒãƒ«ã‚®ãƒ¼ã®å€¤
 	std::vector<double>energy(1 << hamming_distance, std::numeric_limits<double>::infinity());
 
-	//Result‚ªŠm’è‚µ‚½‚©‚Ç‚¤‚©
+	//ResultãŒç¢ºå®šã—ãŸã‹ã©ã†ã‹
 	std::vector<int>searched(1 << hamming_distance, 0);
 
-	//DNode‚Í(ƒXƒ^[ƒg\‘¢‚©‚ç‚»‚Ì\‘¢‚Ü‚Å‚ÌƒoƒŠƒA’lA(-A‚»‚Ì\‘¢‚Ì“Yš))‚Æ‚·‚éB
-	//"-"‚ğ“ü‚ê‚é——R‚ÍAƒoƒŠƒA’l‚ª“¯‚¶ê‡‚ÉŒã“ü‚êæo‚µ‚É‚µ‚½‚¢‚©‚çB
-	//\‘¢‚Ì“Yš‚Æ‚ÍA‚·‚×‚Ä‚Ì‰Â”\‚È’†ŠÔ\‘¢‚ğBitDP“I‚É“Yš•t‚¯‚µ‚½‚à‚Ì‚Æ‚·‚éB
+	//DNodeã¯(ã‚¹ã‚¿ãƒ¼ãƒˆæ§‹é€ ã‹ã‚‰ãã®æ§‹é€ ã¾ã§ã®ãƒãƒªã‚¢å€¤ã€(-æ™‚åˆ»ã€ãã®æ§‹é€ ã®æ·»å­—))ã¨ã™ã‚‹ã€‚
+	//"-æ™‚åˆ»"ã‚’å…¥ã‚Œã‚‹ç†ç”±ã¯ã€ãƒãƒªã‚¢å€¤ãŒåŒã˜å ´åˆã«å¾Œå…¥ã‚Œå…ˆå‡ºã—ã«ã—ãŸã„ã‹ã‚‰ã€‚
+	//æ§‹é€ ã®æ·»å­—ã¨ã¯ã€ã™ã¹ã¦ã®å¯èƒ½ãªä¸­é–“æ§‹é€ ã‚’BitDPçš„ã«æ·»å­—ä»˜ã‘ã—ãŸã‚‚ã®ã¨ã™ã‚‹ã€‚
 	typedef std::pair<double, std::pair<int, int>> DNode;
 
 	std::priority_queue<DNode, std::vector<DNode>, std::greater<DNode>>dijkstra;
@@ -389,7 +389,7 @@ MinimumBarrierDirectPathDijkstraOld(
 		}
 	}
 
-	//ƒgƒŒ[ƒXƒoƒbƒN
+	//ãƒˆãƒ¬ãƒ¼ã‚¹ãƒãƒƒã‚¯
 	std::vector<std::string>reversed_answer{ structure2 };
 	for (int structure_index = (1 << hamming_distance) - 1; structure_index;) {
 		bool flag = false;

@@ -1,6 +1,6 @@
-/*
+ï»¿/*
 GNU GPL v2
-Copyright (c) 2019 Hiroki Takizawa
+Copyright (c) 2020 Hiroki Takizawa
 */
 
 #include "previous_indirect_ea.h"
@@ -58,7 +58,7 @@ std::vector<std::pair<int, int>>M1Mechanism(
 	const std::vector<std::pair<int, int>>& action_list,
 	const int t1,
 	const int t2) {
-	//action_list[t1]‚ğœ‹‚µ‚ÄA‚»‚ê‚ğaction_list[t2]‚Ì’¼Œã‚É‘}“ü‚·‚éB
+	//action_list[t1]ã‚’é™¤å»ã—ã¦ã€ãã‚Œã‚’action_list[t2]ã®ç›´å¾Œã«æŒ¿å…¥ã™ã‚‹ã€‚
 
 	assert(0 <= t1 && t1 < action_list.size());
 	assert(0 <= t2 && t2 < action_list.size());
@@ -66,20 +66,20 @@ std::vector<std::pair<int, int>>M1Mechanism(
 
 	std::vector<std::pair<int, int>>new_action_chain;
 	if (t1 < t2) {
-		//[t1]‚ğ”²‚¢‚Ä[t2]‚Ì’¼Œã‚É“ü‚ê‚éB
+		//[t1]ã‚’æŠœã„ã¦[t2]ã®ç›´å¾Œã«å…¥ã‚Œã‚‹ã€‚
 		for (int i = 0; i < t1; ++i)new_action_chain.push_back(action_list[i]);
 		for (int i = t1+1; i <= t2; ++i)new_action_chain.push_back(action_list[i]);
 		new_action_chain.push_back(action_list[t1]);
 		for (int i = t2 + 1; i < action_list.size(); ++i)new_action_chain.push_back(action_list[i]);
 	}
 	else if(t2 + 1 < t1) {
-		//[t1]‚ğ”²‚¢‚Ä[t2]‚Ì’¼Œã‚É“ü‚ê‚éB
+		//[t1]ã‚’æŠœã„ã¦[t2]ã®ç›´å¾Œã«å…¥ã‚Œã‚‹ã€‚
 		for (int i = 0; i <= t2; ++i)new_action_chain.push_back(action_list[i]);
 		new_action_chain.push_back(action_list[t1]);
 		for (int i = t2 + 1; i < t1; ++i)new_action_chain.push_back(action_list[i]);
 		for (int i = t1 + 1; i < action_list.size(); ++i)new_action_chain.push_back(action_list[i]);
 	}
-	else new_action_chain = action_list;//”²‚¢‚½êŠ‚É“ü‚ê‚éA‚Â‚Ü‚è‰½‚à•Ï‚í‚ç‚È‚¢
+	else new_action_chain = action_list;//æŠœã„ãŸå ´æ‰€ã«å…¥ã‚Œã‚‹ã€ã¤ã¾ã‚Šä½•ã‚‚å¤‰ã‚ã‚‰ãªã„
 	return new_action_chain;
 }
 
@@ -89,7 +89,7 @@ std::vector<std::pair<int, int>>M2Mechanism(
 	std::vector<std::pair<int, int>> action_list,
 	const int t1,
 	const int t2) {
-	//[t1]‚Æ[t2]‚ğ“ü‚ê‘Ö‚¦‚éB
+	//[t1]ã¨[t2]ã‚’å…¥ã‚Œæ›¿ãˆã‚‹ã€‚
 
 	assert(0 <= t1 && t1 < action_list.size());
 	assert(0 <= t2 && t2 < action_list.size());
@@ -108,7 +108,7 @@ std::vector<std::pair<int, int>>M3Mechanism(
 	const std::pair<int, int> x,
 	const int t1,
 	const int t2) {
-	//action_list[t1]‚Ì’¼Œã‚Æaction_list[t2]‚Ì’¼Œã‚Éx‚ğ‘}“ü‚·‚éB
+	//action_list[t1]ã®ç›´å¾Œã¨action_list[t2]ã®ç›´å¾Œã«xã‚’æŒ¿å…¥ã™ã‚‹ã€‚
 
 	assert(0 <= t1 && t1 < action_list.size());
 	assert(0 <= t2 && t2 < action_list.size());
@@ -126,8 +126,8 @@ std::vector<std::pair<int, int>>M3Mechanism(
 }
 
 int GaussianBiasedSelection(const int size, std::mt19937_64& rnd, const bool descending) {
-	//descending: 0‚ªo‚â‚·‚­Asize-1‚Ío‚É‚­‚¢B
-	//ascending: size-1‚ªo‚â‚·‚­A0‚Ío‚É‚­‚¢B
+	//descending: 0ãŒå‡ºã‚„ã™ãã€size-1ã¯å‡ºã«ãã„ã€‚
+	//ascending: size-1ãŒå‡ºã‚„ã™ãã€0ã¯å‡ºã«ãã„ã€‚
 	static std::normal_distribution<double>X(0.0, sqrt(1.0 / 12.0));
 	const int index = std::min<int>(size - 1, int(std::abs(X(rnd)) * double(size)));
 	return descending ? index : size - 1 - index;
@@ -141,43 +141,43 @@ std::vector<std::pair<int, int>>M1Strategy(
 	const int t2lb,
 	const int t2ub,
 	std::mt19937_64& rnd) {
-	//action_list[t1]‚ğœ‹‚µA‚»‚ê‚ğaction_list[t2lb,t2ub]‚Ì”ÍˆÍ“à‚Ì‚Ç‚ê‚©‚Ì’¼Œã‚É‘}“ü‚·‚éB
-	//action_list‚ªvalid‚É‚È‚é‚æ‚¤‚È‘}“üˆÊ’u‚Ì‚¤‚¿A—L–]‚»‚¤‚È‘}“üˆÊ’u‚ª‘I‚Î‚ê‚â‚·‚¢‚æ‚¤‚Èbias‚ğ‚©‚¯‚éB
-	//action_list‚ªvalid‚É‚È‚é‚æ‚¤‚È‘}“üˆÊ’u‚ª‘¶İ‚µ‚È‚¢‚È‚ç‚Î‹ó‚Á‚Û‚Ìpathway‚ğ•Ô‚·B
+	//action_list[t1]ã‚’é™¤å»ã—ã€ãã‚Œã‚’action_list[t2lb,t2ub]ã®ç¯„å›²å†…ã®ã©ã‚Œã‹ã®ç›´å¾Œã«æŒ¿å…¥ã™ã‚‹ã€‚
+	//action_listãŒvalidã«ãªã‚‹ã‚ˆã†ãªæŒ¿å…¥ä½ç½®ã®ã†ã¡ã€æœ‰æœ›ãã†ãªæŒ¿å…¥ä½ç½®ãŒé¸ã°ã‚Œã‚„ã™ã„ã‚ˆã†ãªbiasã‚’ã‹ã‘ã‚‹ã€‚
+	//action_listãŒvalidã«ãªã‚‹ã‚ˆã†ãªæŒ¿å…¥ä½ç½®ãŒå­˜åœ¨ã—ãªã„ãªã‚‰ã°ç©ºã£ã½ã®pathwayã‚’è¿”ã™ã€‚
 
 	assert(0 <= t1 && t1 < action_list.size());
 	assert(0 <= t2lb && t2lb <= t2ub && t2ub < action_list.size());
-	assert(t2ub <= t1 || t1 <= t2lb);//t2‚Ì”ÍˆÍ‚Ít1‚Ì‘O‚©Œã‚ë‚¾‚¯
+	assert(t2ub <= t1 || t1 <= t2lb);//t2ã®ç¯„å›²ã¯t1ã®å‰ã‹å¾Œã‚ã ã‘
 	/*HEAVY*/assert(IsValidPathway(A, B, action_list));
 
 	std::vector<std::vector<std::pair<int, int>>>valid_mutations;
 
 	if (t2ub <= t1) {
-		//t1‚æ‚è‘O‚É‚¢‚ét2‚Ì’¼Œã‚Ét1‚ğ‘}“ü‚·‚é‚Æ‚¢‚¤•ÏˆÙƒpƒX‚Ì‚¤‚¿Avalid‚ÈƒpƒX‚ğ‘S—ñ‹“‚·‚éB
+		//t1ã‚ˆã‚Šå‰ã«ã„ã‚‹t2ã®ç›´å¾Œã«t1ã‚’æŒ¿å…¥ã™ã‚‹ã¨ã„ã†å¤‰ç•°ãƒ‘ã‚¹ã®ã†ã¡ã€validãªãƒ‘ã‚¹ã‚’å…¨åˆ—æŒ™ã™ã‚‹ã€‚
 		for (int t2 = std::max<int>(0, t2lb); t2 <= t1 && t2 <= t2ub; ++t2) {
 			const auto candidate = M1Mechanism(A, B, action_list, t1, t2);
 			if (IsValidPathway(A, B, candidate))valid_mutations.push_back(candidate);
 		}
 	}
 	else {
-		//t1‚æ‚èŒã‚ë‚É‚¢‚ét2‚Ì’¼Œã‚Ét1‚ğ‘}“ü‚·‚é‚Æ‚¢‚¤•ÏˆÙƒpƒX‚Ì‚¤‚¿Avalid‚ÈƒpƒX‚ğ‘S—ñ‹“‚·‚éB
+		//t1ã‚ˆã‚Šå¾Œã‚ã«ã„ã‚‹t2ã®ç›´å¾Œã«t1ã‚’æŒ¿å…¥ã™ã‚‹ã¨ã„ã†å¤‰ç•°ãƒ‘ã‚¹ã®ã†ã¡ã€validãªãƒ‘ã‚¹ã‚’å…¨åˆ—æŒ™ã™ã‚‹ã€‚
 		for (int t2 = std::min<int>(t1, t2lb); t2 < action_list.size() && t2 <= t2ub; ++t2) {
 			const auto candidate = M1Mechanism(A, B, action_list, t1, t2);
 			if (IsValidPathway(A, B, candidate))valid_mutations.push_back(candidate);
 		}
 	}
 
-	//valid‚ÈƒpƒX‚ª–³‚¢ê‡‚ÍI—¹
+	//validãªãƒ‘ã‚¹ãŒç„¡ã„å ´åˆã¯çµ‚äº†
 	if (valid_mutations.size() == 0)return std::vector<std::pair<int, int>>{};
 
-	//t1‚ª‰–Šî‘Î‚ğ‘g‚Ş‘€ì‚È‚Ì‚©ŠO‚·‘€ì‚È‚Ì‚©‚ğ’²‚×‚éB
+	//t1ãŒå¡©åŸºå¯¾ã‚’çµ„ã‚€æ“ä½œãªã®ã‹å¤–ã™æ“ä½œãªã®ã‹ã‚’èª¿ã¹ã‚‹ã€‚
 	int count = A.find(action_list[t1]) != A.end() ? 1 : 0;
 	for (int i = 0; i < t1; ++i)if (action_list[i] == action_list[t1])count++;
 
-	//‚±‚Ì“_‚Åcount‚ªŠï”‚È‚çt1‚Í‹ô”‰ñ–Ú‚Å‚ ‚èŠO‚·ˆ—‚Å‚ ‚éB
-	//‚ä‚¦‚É‚±‚Ì‚Æ‚«‚Ít2‚Ít1‚Æ‹ß‚¢‚Ù‚¤‚ª‚æ‚¢Bt2‚Ì‚Ù‚¤‚ª’x‚¢‚È‚çDescendingBias‚ª—~‚µ‚¢B
-	//t2‚ª‘O‚Ìê‡(M5‚Åg‚¤)Abias‚ÌŒü‚«‚Í˜_•¶‚É‘‚©‚ê‚Ä‚¢‚È‚¢B‚æ‚Á‚ÄˆÀ‘Sô‚Æ‚µ‚Ät2‚Æt1‚ª‹ß‚¢‚Ù‚¤‚ª‚æ‚¢‚±‚Æ‚É‚·‚éB
-	//‚·‚È‚í‚¿(t1 <= t2lb)‚ªfalse‚È‚çˆø”‚Íí‚Éfalse‚Æ‚·‚éB
+	//ã“ã®æ™‚ç‚¹ã§countãŒå¥‡æ•°ãªã‚‰t1ã¯å¶æ•°å›ç›®ã§ã‚ã‚Šå¤–ã™å‡¦ç†ã§ã‚ã‚‹ã€‚
+	//ã‚†ãˆã«ã“ã®ã¨ãã¯t2ã¯t1ã¨è¿‘ã„ã»ã†ãŒã‚ˆã„ã€‚t2ã®ã»ã†ãŒé…ã„ãªã‚‰DescendingBiasãŒæ¬²ã—ã„ã€‚
+	//t2ãŒå‰ã®å ´åˆ(M5ã§ä½¿ã†)ã€biasã®å‘ãã¯è«–æ–‡ã«æ›¸ã‹ã‚Œã¦ã„ãªã„ã€‚ã‚ˆã£ã¦å®‰å…¨ç­–ã¨ã—ã¦t2ã¨t1ãŒè¿‘ã„ã»ã†ãŒã‚ˆã„ã“ã¨ã«ã™ã‚‹ã€‚
+	//ã™ãªã‚ã¡(t1 <= t2lb)ãŒfalseãªã‚‰å¼•æ•°ã¯å¸¸ã«falseã¨ã™ã‚‹ã€‚
 	return valid_mutations[GaussianBiasedSelection(valid_mutations.size(), rnd, (count % 2 == 1) & (t1 <= t2lb))];
 
 }
@@ -187,7 +187,7 @@ std::vector<std::pair<int, int>>M1(
 	const std::set<std::pair<int, int>>& B,
 	const std::vector<std::pair<int, int>>& action_list,
 	std::mt19937_64& rnd) {
-	//˜_•¶‚Ì•ÏˆÙ¶¬è–@M1‚ğ‚â‚éB¸”s‚µ‚½‚ç‹ó‚Á‚Û‚Ìpathway‚ğ•Ô‚·B
+	//è«–æ–‡ã®å¤‰ç•°ç”Ÿæˆæ‰‹æ³•M1ã‚’ã‚„ã‚‹ã€‚å¤±æ•—ã—ãŸã‚‰ç©ºã£ã½ã®pathwayã‚’è¿”ã™ã€‚
 
 	/*HEAVY*/assert(IsValidPathway(A, B, action_list));
 
@@ -202,18 +202,18 @@ std::vector<std::pair<int, int>>M2(
 	const std::set<std::pair<int, int>>& B,
 	const std::vector<std::pair<int, int>>& action_list,
 	std::mt19937_64& rnd) {
-	//˜_•¶‚Ì•ÏˆÙ¶¬è–@M2‚ğ‚â‚éB¸”s‚µ‚½‚ç‹ó‚Á‚Û‚Ìpathway‚ğ•Ô‚·B
+	//è«–æ–‡ã®å¤‰ç•°ç”Ÿæˆæ‰‹æ³•M2ã‚’ã‚„ã‚‹ã€‚å¤±æ•—ã—ãŸã‚‰ç©ºã£ã½ã®pathwayã‚’è¿”ã™ã€‚
 
 	/*HEAVY*/assert(IsValidPathway(A, B, action_list));
 
-	//ƒXƒƒbƒv‚µ‚¤‚éaction‚Ì‘g(i,j)‚ğ‘S—ñ‹“‚µ‚ÄƒVƒƒƒbƒtƒ‹‚·‚éB
+	//ã‚¹ãƒ¯ãƒƒãƒ—ã—ã†ã‚‹actionã®çµ„(i,j)ã‚’å…¨åˆ—æŒ™ã—ã¦ã‚·ãƒ£ãƒƒãƒ•ãƒ«ã™ã‚‹ã€‚
 	std::vector<std::pair<int, int>>candidates;
 	for (int i = 0; i < action_list.size(); ++i) {
 		for (int j = i + 1; j < action_list.size(); ++j) {
 			candidates.push_back(std::make_pair(i, j));
 		}
 	}
-	std::sort(candidates.begin(), candidates.end());//Œ‹‰Ê‚ÌÄŒ»«‚ğ•Û‚Â‚½‚ß‚Éƒ\[ƒg‚·‚éB
+	std::sort(candidates.begin(), candidates.end());//çµæœã®å†ç¾æ€§ã‚’ä¿ã¤ãŸã‚ã«ã‚½ãƒ¼ãƒˆã™ã‚‹ã€‚
 	std::shuffle(candidates.begin(), candidates.end(), rnd);
 
 	for (const auto x : candidates) {
@@ -221,7 +221,7 @@ std::vector<std::pair<int, int>>M2(
 		if (IsValidPathway(A, B, candidate))return candidate;
 	}
 
-	//‚Ç‚¤ƒVƒƒƒbƒtƒ‹‚µ‚Ä‚àinvalid‚É‚È‚é‚È‚çI—¹B
+	//ã©ã†ã‚·ãƒ£ãƒƒãƒ•ãƒ«ã—ã¦ã‚‚invalidã«ãªã‚‹ãªã‚‰çµ‚äº†ã€‚
 	return std::vector<std::pair<int, int>>{};
 }
 
@@ -236,24 +236,24 @@ std::vector<std::pair<int, int>>M3Strategy(
 	const std::pair<int,int>x,
 	const bool is_plus,
 	std::mt19937_64& rnd) {
-	//action_list[t1]‚Ì’¼Œã‚Éx‚ğ‘}“ü‚µA‚©‚Â
-	//action_list[t2lb,t2ub]‚Ì”ÍˆÍ“à‚Ì‚Ç‚ê‚©‚Ì’¼Œã‚É‚àx‚ğ‘}“ü‚·‚éB
-	//action_list‚ªvalid‚É‚È‚é‚æ‚¤‚È‘}“üˆÊ’u‚Ì‚¤‚¿A—L–]‚»‚¤‚È‘}“üˆÊ’u‚ª‘I‚Î‚ê‚â‚·‚¢‚æ‚¤‚Èbias‚ğ‚©‚¯‚éB
-	//action_list‚ªvalid‚É‚È‚é‚æ‚¤‚È‘}“üˆÊ’u‚ª‘¶İ‚µ‚È‚¢‚È‚ç‚Î‹ó‚Á‚Û‚Ìpathway‚ğ•Ô‚·B
+	//action_list[t1]ã®ç›´å¾Œã«xã‚’æŒ¿å…¥ã—ã€ã‹ã¤
+	//action_list[t2lb,t2ub]ã®ç¯„å›²å†…ã®ã©ã‚Œã‹ã®ç›´å¾Œã«ã‚‚xã‚’æŒ¿å…¥ã™ã‚‹ã€‚
+	//action_listãŒvalidã«ãªã‚‹ã‚ˆã†ãªæŒ¿å…¥ä½ç½®ã®ã†ã¡ã€æœ‰æœ›ãã†ãªæŒ¿å…¥ä½ç½®ãŒé¸ã°ã‚Œã‚„ã™ã„ã‚ˆã†ãªbiasã‚’ã‹ã‘ã‚‹ã€‚
+	//action_listãŒvalidã«ãªã‚‹ã‚ˆã†ãªæŒ¿å…¥ä½ç½®ãŒå­˜åœ¨ã—ãªã„ãªã‚‰ã°ç©ºã£ã½ã®pathwayã‚’è¿”ã™ã€‚
 
 	assert(0 <= t1 && t1 < action_list.size());
 	assert(0 <= t2lb && t2lb <= t2ub && t2ub < action_list.size());
-	assert(t2ub <= t1 || t1 <= t2lb);//t2‚Ì”ÍˆÍ‚Ít1‚Ì‘O‚©Œã‚ë‚¾‚¯
+	assert(t2ub <= t1 || t1 <= t2lb);//t2ã®ç¯„å›²ã¯t1ã®å‰ã‹å¾Œã‚ã ã‘
 	/*HEAVY*/assert(IsValidPathway(A, B, action_list));
 
-	//action_list[t1]‚Ì’¼Œã‚Éx‚ğ‘}“ü‚·‚é‚±‚Æ©‘Ì‚ªinvalid‚Èê‡A
-	//IsValidPathway‚ª‚·‚×‚Äfalse‚É‚È‚é‚±‚Æ‚ÅAŒ‹‹Ç‹ó‚Á‚Û‚Ìpathway‚ª•Ô‚³‚ê‚éB
-	//‚æ‚Á‚ÄA‚»‚ê‚ğ‚±‚±‚ÅŒŸ¸‚µ‚È‚­‚Ä‚à‚æ‚¢B
+	//action_list[t1]ã®ç›´å¾Œã«xã‚’æŒ¿å…¥ã™ã‚‹ã“ã¨è‡ªä½“ãŒinvalidãªå ´åˆã€
+	//IsValidPathwayãŒã™ã¹ã¦falseã«ãªã‚‹ã“ã¨ã§ã€çµå±€ç©ºã£ã½ã®pathwayãŒè¿”ã•ã‚Œã‚‹ã€‚
+	//ã‚ˆã£ã¦ã€ãã‚Œã‚’ã“ã“ã§æ¤œæŸ»ã—ãªãã¦ã‚‚ã‚ˆã„ã€‚
 
 	std::vector<std::vector<std::pair<int, int>>>valid_mutations;
 
-	//3. ƒ‰ƒ“ƒ_ƒ€‚É‘I‚ñ‚¾‰–Šî‘Îx‚É‘Î‚µ‚ÄA‚»‚ê‚ğt1‚Ì’¼Œã‚É‘g‚ñ‚¾‚Æ‚µ‚ÄA
-	//‚»‚ê‚ğŠO‚·ƒ^ƒCƒ~ƒ“ƒO‚Æ‚µ‚Ävalid‚Èƒ^ƒCƒ~ƒ“ƒOt2‚ğ‘S—ñ‹“‚·‚éB
+	//3. ãƒ©ãƒ³ãƒ€ãƒ ã«é¸ã‚“ã å¡©åŸºå¯¾xã«å¯¾ã—ã¦ã€ãã‚Œã‚’t1ã®ç›´å¾Œã«çµ„ã‚“ã ã¨ã—ã¦ã€
+	//ãã‚Œã‚’å¤–ã™ã‚¿ã‚¤ãƒŸãƒ³ã‚°ã¨ã—ã¦validãªã‚¿ã‚¤ãƒŸãƒ³ã‚°t2ã‚’å…¨åˆ—æŒ™ã™ã‚‹ã€‚
 	if (t2ub <= t1) {
 		for (int t2 = std::max<int>(0, t2lb); t2 + 1 < t1 && t2 <= t2ub; ++t2) {
 			const auto new_action_list = M3Mechanism(A, B, action_list, x, t1, t2);
@@ -261,20 +261,20 @@ std::vector<std::pair<int, int>>M3Strategy(
 		}
 	}
 	else {
-		//t1‚æ‚èŒã‚ë‚É‚¢‚ét2‚Ì’¼Œã‚Ét1‚ğ‘}“ü‚·‚é‚Æ‚¢‚¤•ÏˆÙƒpƒX‚Ì‚¤‚¿Avalid‚ÈƒpƒX‚ğ‘S—ñ‹“‚·‚éB
+		//t1ã‚ˆã‚Šå¾Œã‚ã«ã„ã‚‹t2ã®ç›´å¾Œã«t1ã‚’æŒ¿å…¥ã™ã‚‹ã¨ã„ã†å¤‰ç•°ãƒ‘ã‚¹ã®ã†ã¡ã€validãªãƒ‘ã‚¹ã‚’å…¨åˆ—æŒ™ã™ã‚‹ã€‚
 		for (int t2 = std::min<int>(t1 + 1, t2lb); t2 < action_list.size() && t2 <= t2ub; ++t2) {
 			const auto new_action_list = M3Mechanism(A, B, action_list, x, t1, t2);
 			if (IsValidPathway(A, B, new_action_list))valid_mutations.push_back(new_action_list);
 		}
 	}
 
-	//˜_•¶‚É‚Í‘‚©‚ê‚Ä‚¢‚È‚¢‚ªA‚·‚×‚Ä‚Ìt2‚Åinvalid‚Èpathway‚µ‚©¶‚¶‚È‚¢‚±‚Æ‚ªl‚¦‚ç‚ê‚éB
+	//è«–æ–‡ã«ã¯æ›¸ã‹ã‚Œã¦ã„ãªã„ãŒã€ã™ã¹ã¦ã®t2ã§invalidãªpathwayã—ã‹ç”Ÿã˜ãªã„ã“ã¨ãŒè€ƒãˆã‚‰ã‚Œã‚‹ã€‚
 	if (valid_mutations.size() == 0)return std::vector<std::pair<int, int>>{};
 	
-	//plus, t1<t2 ¨ false //t1‚Å‘g‚ñ‚¾‚ç‚Å‚«‚é‚¾‚¯—£‚ê‚ÄŠO‚µ‚½‚¢{“Yš‚ª‘å‚«‚¢‚Ù‚Ç—£‚ê‚é
-	//plus, t2<t1 ¨ true  //t2‚Å‘g‚ñ‚¾‚ç‚Å‚«‚é‚¾‚¯—£‚µ‚ÄŠO‚µ‚½‚¢{“Yš‚ª¬‚³‚¢‚Ù‚Ç—£‚ê‚é
-	//minus,t1<t2 ¨ true  //t1‚Å—£‚µ‚½‚ç‚Å‚«‚é‚¾‚¯‹ß‚­‚Å‘g‚İ‚½‚¢{“Yš‚ª‘å‚«‚¢‚Ù‚Ç—£‚ê‚é
-	//minus,t2<t1 ¨ false //t2‚Å—£‚µ‚½‚ç‚Å‚«‚é‚¾‚¯‹ß‚­‚Å‘g‚İ‚½‚¢{“Yš‚ª¬‚«‚¢‚Ù‚Ç—£‚ê‚é
+	//plus, t1<t2 â†’ false //t1ã§çµ„ã‚“ã ã‚‰ã§ãã‚‹ã ã‘é›¢ã‚Œã¦å¤–ã—ãŸã„ï¼‹æ·»å­—ãŒå¤§ãã„ã»ã©é›¢ã‚Œã‚‹
+	//plus, t2<t1 â†’ true  //t2ã§çµ„ã‚“ã ã‚‰ã§ãã‚‹ã ã‘é›¢ã—ã¦å¤–ã—ãŸã„ï¼‹æ·»å­—ãŒå°ã•ã„ã»ã©é›¢ã‚Œã‚‹
+	//minus,t1<t2 â†’ true  //t1ã§é›¢ã—ãŸã‚‰ã§ãã‚‹ã ã‘è¿‘ãã§çµ„ã¿ãŸã„ï¼‹æ·»å­—ãŒå¤§ãã„ã»ã©é›¢ã‚Œã‚‹
+	//minus,t2<t1 â†’ false //t2ã§é›¢ã—ãŸã‚‰ã§ãã‚‹ã ã‘è¿‘ãã§çµ„ã¿ãŸã„ï¼‹æ·»å­—ãŒå°ãã„ã»ã©é›¢ã‚Œã‚‹
 	return valid_mutations[GaussianBiasedSelection(valid_mutations.size(), rnd, (t2ub <= t1) ^ is_plus)];
 }
 
@@ -284,25 +284,25 @@ std::vector<std::pair<int, int>>M3Plus(
 	const std::set<std::pair<int, int>>& B,
 	const std::vector<std::pair<int, int>>& action_list,
 	std::mt19937_64& rnd) {
-	//˜_•¶‚Ì•ÏˆÙ¶¬è–@M3+‚ğ‚â‚éB¸”s‚µ‚½‚ç‹ó‚Á‚Û‚Ìpathway‚ğ•Ô‚·B
+	//è«–æ–‡ã®å¤‰ç•°ç”Ÿæˆæ‰‹æ³•M3+ã‚’ã‚„ã‚‹ã€‚å¤±æ•—ã—ãŸã‚‰ç©ºã£ã½ã®pathwayã‚’è¿”ã™ã€‚
 
 	/*HEAVY*/assert(IsValidPathway(A, B, action_list));
 
 	const int n = sequence.length();
 
-	//1. action_list‚©‚çˆê—l‚É‘I‚ÑAt1‚Æ‚·‚éB
+	//1. action_listã‹ã‚‰ä¸€æ§˜ã«é¸ã³ã€t1ã¨ã™ã‚‹ã€‚
 	if (action_list.size() == 0)return std::vector<std::pair<int, int>>{};
 	const int t1 = std::uniform_int_distribution<int>(0, action_list.size() - 1)(rnd);
 
-	//t1‚Ì’¼Œã‚Ìstructure S‚ğ‰–Šî‘ÎW‡‚Æ‚µ‚Ä‹‚ß‚éBˆø”‚Ìaction_list‚Ívalid‚Å‚ ‚é‚±‚Æ‚ğ‰¼’è‚·‚éB
-	//ƒƒ‚F
-	//t1‚Ì’¼Œã‚É‰–Šî‘Î‚ğ‘}“ü‚·‚é‚Æ‚¢‚¤“®ì‚Í˜_•¶‚Ì‹Lq’Ê‚è‚Å‚ ‚éB
+	//t1ã®ç›´å¾Œã®structure Sã‚’å¡©åŸºå¯¾é›†åˆã¨ã—ã¦æ±‚ã‚ã‚‹ã€‚å¼•æ•°ã®action_listã¯validã§ã‚ã‚‹ã“ã¨ã‚’ä»®å®šã™ã‚‹ã€‚
+	//ãƒ¡ãƒ¢ï¼š
+	//t1ã®ç›´å¾Œã«å¡©åŸºå¯¾ã‚’æŒ¿å…¥ã™ã‚‹ã¨ã„ã†å‹•ä½œã¯è«–æ–‡ã®è¨˜è¿°é€šã‚Šã§ã‚ã‚‹ã€‚
 	//>introducing an addition action add i,j after at1
-	//˜_—“I‚É‚ÍAƒXƒ^[ƒg\‘¢‚Ì’¼Œã‚É‰–Šî‘Î‚ğ‘}“ü‚µ‚Ä‚à–â‘è‚È‚¢‚Í‚¸‚¾‚ªA
-	//˜_•¶‚Ì‹Lq’Ê‚è‚ÉÀ‘•‚µ‚½‚Ì‚ÅƒXƒ^[ƒg\‘¢‚Ì’¼Œã‚É‰–Šî‘Î‚ª‘}“ü‚³‚ê‚é‚±‚Æ‚Í‚È‚¢B
+	//è«–ç†çš„ã«ã¯ã€ã‚¹ã‚¿ãƒ¼ãƒˆæ§‹é€ ã®ç›´å¾Œã«å¡©åŸºå¯¾ã‚’æŒ¿å…¥ã—ã¦ã‚‚å•é¡Œãªã„ã¯ãšã ãŒã€
+	//è«–æ–‡ã®è¨˜è¿°é€šã‚Šã«å®Ÿè£…ã—ãŸã®ã§ã‚¹ã‚¿ãƒ¼ãƒˆæ§‹é€ ã®ç›´å¾Œã«å¡©åŸºå¯¾ãŒæŒ¿å…¥ã•ã‚Œã‚‹ã“ã¨ã¯ãªã„ã€‚
 	const auto S = AssosiatedIntermediateStructure(A, action_list, t1);
 
-	//2. Œ»İ‚Ìstructure S‚É‘Î‚µ‚ÄAvalid‚©‚Âcompatible‚É‘g‚ß‚é‰–Šî‘Î(i,j)‚ğ‘S—ñ‹“‚·‚éB
+	//2. ç¾åœ¨ã®structure Sã«å¯¾ã—ã¦ã€validã‹ã¤compatibleã«çµ„ã‚ã‚‹å¡©åŸºå¯¾(i,j)ã‚’å…¨åˆ—æŒ™ã™ã‚‹ã€‚
 	std::vector<std::pair<int, int>> candidates;
 	for (int i = 0; i < n - TURN - 1; ++i) {
 		for (int j = i + TURN + 1; j < n; ++j) {
@@ -320,7 +320,7 @@ std::vector<std::pair<int, int>>M3Plus(
 		}
 	}
 
-	//valid‚©‚Âcompatible‚É‘g‚ß‚é‰–Šî‘Î‘S‚Ä‚©‚çƒ‰ƒ“ƒ_ƒ€‚É1‚Â‘I‚ÔB
+	//validã‹ã¤compatibleã«çµ„ã‚ã‚‹å¡©åŸºå¯¾å…¨ã¦ã‹ã‚‰ãƒ©ãƒ³ãƒ€ãƒ ã«1ã¤é¸ã¶ã€‚
 	if (candidates.size() == 0)return std::vector<std::pair<int, int>>{};
 	const auto x = candidates[std::uniform_int_distribution<int>(0, candidates.size() - 1)(rnd)];
 
@@ -333,25 +333,25 @@ std::vector<std::pair<int, int>>M3Minus(
 	const std::set<std::pair<int, int>>& B,
 	const std::vector<std::pair<int, int>>& action_list,
 	std::mt19937_64& rnd) {
-	//˜_•¶‚Ì•ÏˆÙ¶¬è–@M3-‚ğ‚â‚éB¸”s‚µ‚½‚ç‹ó‚Á‚Û‚Ìpathway‚ğ•Ô‚·B
+	//è«–æ–‡ã®å¤‰ç•°ç”Ÿæˆæ‰‹æ³•M3-ã‚’ã‚„ã‚‹ã€‚å¤±æ•—ã—ãŸã‚‰ç©ºã£ã½ã®pathwayã‚’è¿”ã™ã€‚
 
 	/*HEAVY*/assert(IsValidPathway(A, B, action_list));
 
 	const int n = sequence.length();
 
-	//1. action_list‚©‚çˆê—l‚É‘I‚ÑAt1‚Æ‚·‚éB
+	//1. action_listã‹ã‚‰ä¸€æ§˜ã«é¸ã³ã€t1ã¨ã™ã‚‹ã€‚
 	if (action_list.size() == 0)return std::vector<std::pair<int, int>>{};
 	const int t1 = std::uniform_int_distribution<int>(0, action_list.size() - 1)(rnd);
 
-	//t1‚Ì’¼Œã‚Ìstructure S‚ğ‰–Šî‘ÎW‡‚Æ‚µ‚Ä‹‚ß‚éBˆø”‚Ìaction_list‚Ívalid‚Å‚ ‚é‚±‚Æ‚ğ‰¼’è‚·‚éB
+	//t1ã®ç›´å¾Œã®structure Sã‚’å¡©åŸºå¯¾é›†åˆã¨ã—ã¦æ±‚ã‚ã‚‹ã€‚å¼•æ•°ã®action_listã¯validã§ã‚ã‚‹ã“ã¨ã‚’ä»®å®šã™ã‚‹ã€‚
 	//
-	//t1‚Ì’¼Œã‚É‰–Šî‘Î‚ğ‘}“ü‚·‚é‚Æ‚¢‚¤“®ì‚Í˜_•¶‚Ì‹Lq’Ê‚è‚Å‚ ‚éB
+	//t1ã®ç›´å¾Œã«å¡©åŸºå¯¾ã‚’æŒ¿å…¥ã™ã‚‹ã¨ã„ã†å‹•ä½œã¯è«–æ–‡ã®è¨˜è¿°é€šã‚Šã§ã‚ã‚‹ã€‚
 	//>introducing an addition action add i,j after at1
-	//˜_—“I‚É‚ÍAƒXƒ^[ƒg\‘¢‚Ì’¼Œã‚É‰–Šî‘Î‚ğ‘}“ü‚µ‚Ä‚à–â‘è‚È‚¢‚Í‚¸‚¾‚ªA
-	//˜_•¶‚Ì‹Lq’Ê‚è‚ÉÀ‘•‚µ‚½‚Ì‚ÅƒXƒ^[ƒg\‘¢‚Ì’¼Œã‚É‰–Šî‘Î‚ª‘}“ü‚³‚ê‚é‚±‚Æ‚Í‚È‚¢B
+	//è«–ç†çš„ã«ã¯ã€ã‚¹ã‚¿ãƒ¼ãƒˆæ§‹é€ ã®ç›´å¾Œã«å¡©åŸºå¯¾ã‚’æŒ¿å…¥ã—ã¦ã‚‚å•é¡Œãªã„ã¯ãšã ãŒã€
+	//è«–æ–‡ã®è¨˜è¿°é€šã‚Šã«å®Ÿè£…ã—ãŸã®ã§ã‚¹ã‚¿ãƒ¼ãƒˆæ§‹é€ ã®ç›´å¾Œã«å¡©åŸºå¯¾ãŒæŒ¿å…¥ã•ã‚Œã‚‹ã“ã¨ã¯ãªã„ã€‚
 	const auto S = AssosiatedIntermediateStructure(A, action_list, t1);
 
-	//2. Œ»İ‚Ìstructure S‚É‘Î‚µ‚ÄAvalid‚ÉŠO‚¹‚é‰–Šî‘Î(i,j)‚ğ‘S—ñ‹“‚µ‚ÄA‚»‚Ì’†‚©‚çƒ‰ƒ“ƒ_ƒ€‚É‘I‚ÔB
+	//2. ç¾åœ¨ã®structure Sã«å¯¾ã—ã¦ã€validã«å¤–ã›ã‚‹å¡©åŸºå¯¾(i,j)ã‚’å…¨åˆ—æŒ™ã—ã¦ã€ãã®ä¸­ã‹ã‚‰ãƒ©ãƒ³ãƒ€ãƒ ã«é¸ã¶ã€‚
 	std::vector<std::pair<int, int>>candidates(S.begin(), S.end());
 	if (candidates.size() == 0)return std::vector<std::pair<int, int>>{};
 	const auto x = candidates[std::uniform_int_distribution<int>(0, candidates.size() - 1)(rnd)];
@@ -367,16 +367,16 @@ std::vector<std::pair<int, int>>M4Strategy(
 	const int t1,
 	const std::pair<int, int>x,
 	std::mt19937_64& rnd) {
-	//action_list[t1]‚æ‚è‚àŒã•û‚Éx‚ªoŒ»‚·‚é‚È‚çAM1‚ÌƒXƒgƒ‰ƒeƒW[‚Å‚»‚ê‚ğt1‚Ì’¼Œã‚ÉˆÚ“®‚·‚éB
-	//action_list[t1]‚æ‚è‚àŒã•û‚Éx‚ªoŒ»‚µ‚È‚¢‚È‚çAaction_list[t1]‚Ì’¼Œã‚Éx‚ğ‘}“ü‚µA‚©‚Â
-	//action_list[t2lb,t2ub]‚Ì”ÍˆÍ“à‚Ì‚Ç‚ê‚©‚Ì’¼Œã‚É‚àx‚ğ‘}“ü‚·‚éB
-	//action_list‚ªvalid‚É‚È‚é‚æ‚¤‚È‘}“üˆÊ’u‚Ì‚¤‚¿A—L–]‚»‚¤‚È‘}“üˆÊ’u‚ª‘I‚Î‚ê‚â‚·‚¢‚æ‚¤‚Èbias‚ğ‚©‚¯‚éB
-	//action_list‚ªvalid‚É‚È‚é‚æ‚¤‚È‘}“üˆÊ’u‚ª‘¶İ‚µ‚È‚¢‚È‚ç‚Î‹ó‚Á‚Û‚Ìpathway‚ğ•Ô‚·B
-	//action_list[t1]‚Ì’¼Œã‚Éx‚ª‘¶İ‚·‚é‚Æ‚«A‚»‚Ìx‚Í‰–Šî‘ÎŒ`¬‚Å‚ ‚èœ‹‚Å‚Í‚È‚­A‚©‚Â‚»‚ê©‘Ì‚Ívalid‚Å‚ ‚é‚Æ‚¢‚¤‚±‚Æ‚ğ‰¼’è‚·‚éB
+	//action_list[t1]ã‚ˆã‚Šã‚‚å¾Œæ–¹ã«xãŒå‡ºç¾ã™ã‚‹ãªã‚‰ã€M1ã®ã‚¹ãƒˆãƒ©ãƒ†ã‚¸ãƒ¼ã§ãã‚Œã‚’t1ã®ç›´å¾Œã«ç§»å‹•ã™ã‚‹ã€‚
+	//action_list[t1]ã‚ˆã‚Šã‚‚å¾Œæ–¹ã«xãŒå‡ºç¾ã—ãªã„ãªã‚‰ã€action_list[t1]ã®ç›´å¾Œã«xã‚’æŒ¿å…¥ã—ã€ã‹ã¤
+	//action_list[t2lb,t2ub]ã®ç¯„å›²å†…ã®ã©ã‚Œã‹ã®ç›´å¾Œã«ã‚‚xã‚’æŒ¿å…¥ã™ã‚‹ã€‚
+	//action_listãŒvalidã«ãªã‚‹ã‚ˆã†ãªæŒ¿å…¥ä½ç½®ã®ã†ã¡ã€æœ‰æœ›ãã†ãªæŒ¿å…¥ä½ç½®ãŒé¸ã°ã‚Œã‚„ã™ã„ã‚ˆã†ãªbiasã‚’ã‹ã‘ã‚‹ã€‚
+	//action_listãŒvalidã«ãªã‚‹ã‚ˆã†ãªæŒ¿å…¥ä½ç½®ãŒå­˜åœ¨ã—ãªã„ãªã‚‰ã°ç©ºã£ã½ã®pathwayã‚’è¿”ã™ã€‚
+	//action_list[t1]ã®ç›´å¾Œã«xãŒå­˜åœ¨ã™ã‚‹ã¨ãã€ãã®xã¯å¡©åŸºå¯¾å½¢æˆã§ã‚ã‚Šé™¤å»ã§ã¯ãªãã€ã‹ã¤ãã‚Œè‡ªä½“ã¯validã§ã‚ã‚‹ã¨ã„ã†ã“ã¨ã‚’ä»®å®šã™ã‚‹ã€‚
 
 	/*HEAVY*/assert(IsValidPathway(A, B, action_list));
 	
-	//action_list‚Ì[t1]‚æ‚èŒã•û‚É‰–Šî‘Î(i,j)‚ªo‚Ä‚­‚é‚©‚Ç‚¤‚©’²‚×‚éB
+	//action_listã®[t1]ã‚ˆã‚Šå¾Œæ–¹ã«å¡©åŸºå¯¾(i,j)ãŒå‡ºã¦ãã‚‹ã‹ã©ã†ã‹èª¿ã¹ã‚‹ã€‚
 	int same_action_pos = -1;
 	for (int i = t1 + 1; i < action_list.size(); ++i) {
 		if (action_list[i] == x) {
@@ -386,14 +386,14 @@ std::vector<std::pair<int, int>>M4Strategy(
 	}
 
 	if (same_action_pos >= 0) {
-		//3.1 action_list‚Ì[t1]‚æ‚èŒã•û‚É‰–Šî‘Î(i,j)‚ªo‚Ä‚­‚é‚È‚çA
-		//‚»‚ê‚ğ"‚¿ã‚°‚Ä"t1‚Ì’¼Œã‚É‚Á‚Ä‚­‚éBM1‚ÌƒXƒgƒ‰ƒeƒW[‚ÅÀs‚·‚éB
+		//3.1 action_listã®[t1]ã‚ˆã‚Šå¾Œæ–¹ã«å¡©åŸºå¯¾(i,j)ãŒå‡ºã¦ãã‚‹ãªã‚‰ã€
+		//ãã‚Œã‚’"æŒã¡ä¸Šã’ã¦"t1ã®ç›´å¾Œã«æŒã£ã¦ãã‚‹ã€‚M1ã®ã‚¹ãƒˆãƒ©ãƒ†ã‚¸ãƒ¼ã§å®Ÿè¡Œã™ã‚‹ã€‚
 		//>move it up and place it after a_t using strategy M1.
 		return M1Strategy(A, B, action_list, same_action_pos, t1, t1, rnd);
 	}
-	//3.2 action_list‚Ì[t1]‚æ‚èŒã•û‚É‰–Šî‘Î(i,j)‚ªo‚Ä‚±‚È‚¢‚È‚çA
-	//[t1]‚Ì’¼Œã‚É(i,j)‚ğ‘}“ü‚µA‚©‚Â‚³‚ç‚ÉŒã•û‚É(i,j)‚ğœ‹‚·‚éˆ—‚ğ‘}“ü‚·‚éB
-	//‚»‚ê‚ÍM3‚ÌƒXƒgƒ‰ƒeƒW[‚ÅÀs‚·‚éB
+	//3.2 action_listã®[t1]ã‚ˆã‚Šå¾Œæ–¹ã«å¡©åŸºå¯¾(i,j)ãŒå‡ºã¦ã“ãªã„ãªã‚‰ã€
+	//[t1]ã®ç›´å¾Œã«(i,j)ã‚’æŒ¿å…¥ã—ã€ã‹ã¤ã•ã‚‰ã«å¾Œæ–¹ã«(i,j)ã‚’é™¤å»ã™ã‚‹å‡¦ç†ã‚’æŒ¿å…¥ã™ã‚‹ã€‚
+	//ãã‚Œã¯M3ã®ã‚¹ãƒˆãƒ©ãƒ†ã‚¸ãƒ¼ã§å®Ÿè¡Œã™ã‚‹ã€‚
 	return M3Strategy(sequence, A, B, action_list, t1, t1, action_list.size() - 1, x, true, rnd);
 }
 
@@ -403,29 +403,29 @@ std::vector<std::pair<int, int>>M4(
 	const std::set<std::pair<int, int>>& B,
 	const std::vector<std::pair<int, int>>& action_list,
 	std::mt19937_64& rnd) {
-	//˜_•¶‚Ì•ÏˆÙ¶¬è–@M4‚ğ‚â‚éB¸”s‚µ‚½‚ç‹ó‚Á‚Û‚Ìpathway‚ğ•Ô‚·B
+	//è«–æ–‡ã®å¤‰ç•°ç”Ÿæˆæ‰‹æ³•M4ã‚’ã‚„ã‚‹ã€‚å¤±æ•—ã—ãŸã‚‰ç©ºã£ã½ã®pathwayã‚’è¿”ã™ã€‚
 
 	/*HEAVY*/assert(IsValidPathway(A, B, action_list));
 
 	const int n = sequence.length();
 
-	//1. action_list‚©‚çˆê—l‚É‘I‚ÑAt1‚Æ‚·‚éB
+	//1. action_listã‹ã‚‰ä¸€æ§˜ã«é¸ã³ã€t1ã¨ã™ã‚‹ã€‚
 	if (action_list.size() == 0)return std::vector<std::pair<int, int>>{};
 	int t1 = std::uniform_int_distribution<int>(0, action_list.size() - 1)(rnd);
 
-	//t1‚Ì’¼Œã‚Ìstructure S‚ğ‰–Šî‘ÎW‡‚Æ‚µ‚Ä‹‚ß‚éBˆø”‚Ìaction_list‚Ívalid‚Å‚ ‚é‚±‚Æ‚ğ‰¼’è‚·‚éB
+	//t1ã®ç›´å¾Œã®structure Sã‚’å¡©åŸºå¯¾é›†åˆã¨ã—ã¦æ±‚ã‚ã‚‹ã€‚å¼•æ•°ã®action_listã¯validã§ã‚ã‚‹ã“ã¨ã‚’ä»®å®šã™ã‚‹ã€‚
 	const auto S = AssosiatedIntermediateStructure(A, action_list, t1);
 
-	//2. ’·‚³4ˆÈã‚Ì˜A‘±‚µ‚½‰–Šî‘Î(stack)‚Ì‚¤‚¿A
-	//“ñŸ\‘¢S‚É‘Î‚µ‚Ä‘¦À‚É’Ç‰Á‚Å‚«‚é(compatible)‚æ‚¤‚È‚à‚Ì‚ğ‘S—ñ‹“‚µAƒ‰ƒ“ƒ_ƒ€‚É1‚Â‘I‚ÔB
-	//‚¿‚È‚İ‚É’·‚³4‚Í˜_•¶‚Ì’lB
+	//2. é•·ã•4ä»¥ä¸Šã®é€£ç¶šã—ãŸå¡©åŸºå¯¾(stack)ã®ã†ã¡ã€
+	//äºŒæ¬¡æ§‹é€ Sã«å¯¾ã—ã¦å³åº§ã«è¿½åŠ ã§ãã‚‹(compatible)ã‚ˆã†ãªã‚‚ã®ã‚’å…¨åˆ—æŒ™ã—ã€ãƒ©ãƒ³ãƒ€ãƒ ã«1ã¤é¸ã¶ã€‚
+	//ã¡ãªã¿ã«é•·ã•4ã¯è«–æ–‡ã®å€¤ã€‚
 	//>all possible stacks with more than 3 consecutive base pairs
 	auto stacks = EnumerateLongStacks(sequence, S, 4, true);
-	std::sort(stacks.begin(), stacks.end());//ÄŒ»«‚Ì‚½‚ßƒ\[ƒg‚·‚éB
+	std::sort(stacks.begin(), stacks.end());//å†ç¾æ€§ã®ãŸã‚ã‚½ãƒ¼ãƒˆã™ã‚‹ã€‚
 	if (stacks.size() == 0)return std::vector<std::pair<int, int>>{};
 	const auto target_stack = stacks[std::uniform_int_distribution<int>(0, stacks.size() - 1)(rnd)];
 
-	//3. 2.‚Å‘I‚ñ‚¾ƒXƒeƒ€‚ğARNA‚Ì“à‘¤‚©‚ç‡”Ô‚É“ü‚ê‚Ä‚¢‚­B
+	//3. 2.ã§é¸ã‚“ã ã‚¹ãƒ†ãƒ ã‚’ã€RNAã®å†…å´ã‹ã‚‰é †ç•ªã«å…¥ã‚Œã¦ã„ãã€‚
 	auto new_action_list = action_list;
 	for (int i = target_stack[0], j = target_stack[1]; i >= target_stack[2]; --i, ++j) {
 		const auto stack_bp = std::make_pair(i, j);
@@ -444,11 +444,11 @@ std::vector<std::pair<int, int>>M5(
 	const std::set<std::pair<int, int>>& B,
 	const std::vector<std::pair<int, int>>& action_list,
 	std::mt19937_64& rnd) {
-	//˜_•¶‚Ì•ÏˆÙ¶¬è–@M5‚ğ‚â‚éB¸”s‚µ‚½‚ç‹ó‚Á‚Û‚Ìpathway‚ğ•Ô‚·B
+	//è«–æ–‡ã®å¤‰ç•°ç”Ÿæˆæ‰‹æ³•M5ã‚’ã‚„ã‚‹ã€‚å¤±æ•—ã—ãŸã‚‰ç©ºã£ã½ã®pathwayã‚’è¿”ã™ã€‚
 
 	/*HEAVY*/assert(IsValidPathway(A, B, action_list));
 
-	//1. action_list‚Ì‚¤‚¿‰–Šî‘Îœ‹‚·‚é‚à‚Ì‚Ì“Yš‚½‚¿‚©‚çˆê—l‚É‘I‚ÑAt1‚Æ‚·‚éB
+	//1. action_listã®ã†ã¡å¡©åŸºå¯¾é™¤å»ã™ã‚‹ã‚‚ã®ã®æ·»å­—ãŸã¡ã‹ã‚‰ä¸€æ§˜ã«é¸ã³ã€t1ã¨ã™ã‚‹ã€‚
 	std::vector<int>t1_candidate;
 	{
 		auto S = A;
@@ -465,19 +465,19 @@ std::vector<std::pair<int, int>>M5(
 	if (t1_candidate.size() == 0)return std::vector<std::pair<int, int>>{};
 	int t1 = t1_candidate[std::uniform_int_distribution<int>(0, t1_candidate.size() - 1)(rnd)];
 
-	//t1‚Ì’¼Œã‚Ì“ñŸ\‘¢‚ğ‰–Šî‘ÎW‡‚Æ‚µ‚Ä‹‚ß‚éBˆø”‚Ìaction_list‚Ívalid‚Å‚ ‚é‚±‚Æ‚ğ‰¼’è‚·‚éB
+	//t1ã®ç›´å¾Œã®äºŒæ¬¡æ§‹é€ ã‚’å¡©åŸºå¯¾é›†åˆã¨ã—ã¦æ±‚ã‚ã‚‹ã€‚å¼•æ•°ã®action_listã¯validã§ã‚ã‚‹ã“ã¨ã‚’ä»®å®šã™ã‚‹ã€‚
 	const auto S = AssosiatedIntermediateStructure(A, action_list, t1);
 
-	//2. ’·‚³4ˆÈã‚Ì˜A‘±‚µ‚½‰–Šî‘Î(stack)‚Ì‚¤‚¿A
-	//“ñŸ\‘¢S‚É‘Î‚µ‚Ä‘¦À‚É’Ç‰Á‚Å‚«‚È‚¢(incompatible)‚æ‚¤‚È‚à‚Ì‚ğ‘S—ñ‹“‚µAƒ‰ƒ“ƒ_ƒ€‚É1‚Â‘I‚ÔB
-	//‚¿‚È‚İ‚É’·‚³4‚Í˜_•¶‚Ì’lB
+	//2. é•·ã•4ä»¥ä¸Šã®é€£ç¶šã—ãŸå¡©åŸºå¯¾(stack)ã®ã†ã¡ã€
+	//äºŒæ¬¡æ§‹é€ Sã«å¯¾ã—ã¦å³åº§ã«è¿½åŠ ã§ããªã„(incompatible)ã‚ˆã†ãªã‚‚ã®ã‚’å…¨åˆ—æŒ™ã—ã€ãƒ©ãƒ³ãƒ€ãƒ ã«1ã¤é¸ã¶ã€‚
+	//ã¡ãªã¿ã«é•·ã•4ã¯è«–æ–‡ã®å€¤ã€‚
 	//>all possible stacks with more than 3 consecutive base pairs
 	auto stacks = EnumerateLongStacks(sequence, S, 4, false);
-	std::sort(stacks.begin(), stacks.end());//ÄŒ»«‚Ì‚½‚ßƒ\[ƒg‚·‚éB
+	std::sort(stacks.begin(), stacks.end());//å†ç¾æ€§ã®ãŸã‚ã‚½ãƒ¼ãƒˆã™ã‚‹ã€‚
 	if (stacks.size() == 0)return std::vector<std::pair<int, int>>{};
 	const auto target_stack = stacks[std::uniform_int_distribution<int>(0, stacks.size() - 1)(rnd)];
 
-	//target_stack’†‚Ì‰–Šî‘Î‚½‚¿‚ğAcompatible‚©‚Ç‚¤‚©‚Å•ª—Ş‚·‚éB
+	//target_stackä¸­ã®å¡©åŸºå¯¾ãŸã¡ã‚’ã€compatibleã‹ã©ã†ã‹ã§åˆ†é¡ã™ã‚‹ã€‚
 	std::vector<std::pair<int, int>>compatible_pairs, incompatible_pairs;
 	for (int i = target_stack[0], j = target_stack[1]; i >= target_stack[2]; --i, ++j) {
 		const auto stack_bp = std::make_pair(i, j);
@@ -491,12 +491,12 @@ std::vector<std::pair<int, int>>M5(
 		else compatible_pairs.push_back(stack_bp);
 	}
 
-	//target_stack’†‚Ì‰–Šî‘Î‚½‚¿‚ğARNA‚Ì“à‘¤‚©‚ç‡”Ô‚É“ü‚ê‚Ä‚¢‚­B
-	//compatible‚È‚â‚Â‚ğ‘S•”“ü‚ê‚Ä‚©‚çAincompatible‚È‚â‚Â‚ğ“ü‚ê‚Ä‚¢‚­B
+	//target_stackä¸­ã®å¡©åŸºå¯¾ãŸã¡ã‚’ã€RNAã®å†…å´ã‹ã‚‰é †ç•ªã«å…¥ã‚Œã¦ã„ãã€‚
+	//compatibleãªã‚„ã¤ã‚’å…¨éƒ¨å…¥ã‚Œã¦ã‹ã‚‰ã€incompatibleãªã‚„ã¤ã‚’å…¥ã‚Œã¦ã„ãã€‚
 	std::vector<std::pair<int, int>>new_action_list = action_list;
 	for (const auto x : compatible_pairs) {
 
-		//3.2 compatible‚È‚à‚Ì‚ÍM4‚ÌƒXƒgƒ‰ƒeƒW[‚Å“ü‚ê‚éB
+		//3.2 compatibleãªã‚‚ã®ã¯M4ã®ã‚¹ãƒˆãƒ©ãƒ†ã‚¸ãƒ¼ã§å…¥ã‚Œã‚‹ã€‚
 		new_action_list = M4Strategy(sequence, A, B, new_action_list, t1, x, rnd);
 		if (new_action_list.size() == 0)return std::vector<std::pair<int, int>>{};
 		assert(new_action_list[t1 + 1] == x);
@@ -504,10 +504,10 @@ std::vector<std::pair<int, int>>M5(
 	}
 	for (const auto x : incompatible_pairs) {
 
-		//4.1 x‚É‘Î‚µ‚Äexclusive‚ÈSã‚Ì‰–Šî‘Î‚»‚ê‚¼‚ê‚É‚Â‚¢‚Ä‘Îˆ‚·‚éB
+		//4.1 xã«å¯¾ã—ã¦exclusiveãªSä¸Šã®å¡©åŸºå¯¾ãã‚Œãã‚Œã«ã¤ã„ã¦å¯¾å‡¦ã™ã‚‹ã€‚
 		for (const auto y : S)if (IsExclusive(x, y)) {
 
-			//y‚ªaction_list[t1]‚æ‚è‚àŒã•û‚Éo‚Ä‚­‚é‚©‚Åê‡•ª‚¯‚·‚éB
+			//yãŒaction_list[t1]ã‚ˆã‚Šã‚‚å¾Œæ–¹ã«å‡ºã¦ãã‚‹ã‹ã§å ´åˆåˆ†ã‘ã™ã‚‹ã€‚
 			int same_action_pos = -1;
 			for (int i = t1 + 1; i < new_action_list.size(); ++i) {
 				if (new_action_list[i] == y) {
@@ -517,20 +517,20 @@ std::vector<std::pair<int, int>>M5(
 			}
 
 			if (same_action_pos >= 0) {
-				//4.2. y‚ªaction_list[t1]‚æ‚è‚àŒã•û‚Éo‚Ä‚­‚é‚È‚çA‚»‚ê‚ğ"‚¿ã‚°‚Ä"At1‚æ‚è‘O•û‚É‘}“ü‚·‚éB
-				//M1‚ÌƒXƒgƒ‰ƒeƒW[‚ğg‚¤B
+				//4.2. yãŒaction_list[t1]ã‚ˆã‚Šã‚‚å¾Œæ–¹ã«å‡ºã¦ãã‚‹ãªã‚‰ã€ãã‚Œã‚’"æŒã¡ä¸Šã’ã¦"ã€t1ã‚ˆã‚Šå‰æ–¹ã«æŒ¿å…¥ã™ã‚‹ã€‚
+				//M1ã®ã‚¹ãƒˆãƒ©ãƒ†ã‚¸ãƒ¼ã‚’ä½¿ã†ã€‚
 				new_action_list = M1Strategy(A, B, new_action_list, same_action_pos, 0, t1, rnd);
 			}
 			else {
-				//4.3. y‚ªaction_list[t1]‚æ‚è‚àŒã•û‚Éo‚Ä‚±‚È‚¢‚È‚çAaction_list[t1]‚Ì’¼Œã‚Éy‚ğ‘}“ü‚µA
-				//‚³‚ç‚ÉŒã•û‚É‚ày‚ğ‘}“ü‚·‚éBM3‚ÌƒXƒgƒ‰ƒeƒW[‚ğg‚¤B
+				//4.3. yãŒaction_list[t1]ã‚ˆã‚Šã‚‚å¾Œæ–¹ã«å‡ºã¦ã“ãªã„ãªã‚‰ã€action_list[t1]ã®ç›´å¾Œã«yã‚’æŒ¿å…¥ã—ã€
+				//ã•ã‚‰ã«å¾Œæ–¹ã«ã‚‚yã‚’æŒ¿å…¥ã™ã‚‹ã€‚M3ã®ã‚¹ãƒˆãƒ©ãƒ†ã‚¸ãƒ¼ã‚’ä½¿ã†ã€‚
 				new_action_list = M3Strategy(sequence, A, B, new_action_list, t1, t1, new_action_list.size() - 1, y, false, rnd);
 			}
 			if (new_action_list.size() == 0)return std::vector<std::pair<int, int>>{};
 			++t1;
 		}
-		//‚±‚Ì“_‚ÅAaction_state[t1]‚Ì’¼Œã‚Ì’†ŠÔ\‘¢‚É‘Î‚µ‚Äx‚ªcompatible‚Å‚ ‚éB
-		//‚æ‚Á‚ÄA3.2‚Æ“¯‚¶‚­M4‚ÌƒXƒgƒ‰ƒeƒW[‚Åx‚ğ“ü‚ê‚ç‚ê‚éB
+		//ã“ã®æ™‚ç‚¹ã§ã€action_state[t1]ã®ç›´å¾Œã®ä¸­é–“æ§‹é€ ã«å¯¾ã—ã¦xãŒcompatibleã§ã‚ã‚‹ã€‚
+		//ã‚ˆã£ã¦ã€3.2ã¨åŒã˜ãM4ã®ã‚¹ãƒˆãƒ©ãƒ†ã‚¸ãƒ¼ã§xã‚’å…¥ã‚Œã‚‰ã‚Œã‚‹ã€‚
 		new_action_list = M4Strategy(sequence, A, B, new_action_list, t1, x, rnd);
 		if (new_action_list.size() == 0)return std::vector<std::pair<int, int>>{};
 		assert(new_action_list[t1 + 1] == x);
@@ -545,11 +545,11 @@ LiZhang2012RNAEAPathIndirect(
 	const std::string& sequence,
 	const std::string& structure1,
 	const std::string& structure2,
-	const int initial_population,//Å‰‚É“K“–‚Éì‚éƒpƒX‚Ì”B4
-	const int gamma_generation,//I—¹ğŒ‚ÉŠÖ‚í‚éƒÁ 5
-	const int max_generation,//I—¹ğŒ‚ÉŠÖ‚í‚éMAX 10
-	const int script_capital_l,//q‹Ÿ‚Ì”‚ÉŠÖ‚í‚éA100
-	const int l1_elite_population,//ƒGƒŠ[ƒg‚Ì”A5
+	const int initial_population,//æœ€åˆã«é©å½“ã«ä½œã‚‹ãƒ‘ã‚¹ã®æ•°ã€‚4
+	const int gamma_generation,//çµ‚äº†æ¡ä»¶ã«é–¢ã‚ã‚‹Î³ 5
+	const int max_generation,//çµ‚äº†æ¡ä»¶ã«é–¢ã‚ã‚‹MAX 10
+	const int script_capital_l,//å­ä¾›ã®æ•°ã«é–¢ã‚ã‚‹ã€100
+	const int l1_elite_population,//ã‚¨ãƒªãƒ¼ãƒˆã®æ•°ã€5
 	const int l2_survive_population,// 5
 	const int l3_final_max_population,// 100
 	const int random_seed) {
@@ -559,12 +559,12 @@ LiZhang2012RNAEAPathIndirect(
 	const int n = sequence.length();
 	std::mt19937_64 rnd(random_seed);
 
-	//Fig. 2‚Ì1s–ÚB˜_•¶‚Ì‹L–@‚¾‚Æmax‚Å‚Í‚È‚­abs‚¾‚ªAmax‚Å‚à“™‰¿‚Èˆ—‚Í‚Å‚«‚éB
+	//Fig. 2ã®1è¡Œç›®ã€‚è«–æ–‡ã®è¨˜æ³•ã ã¨maxã§ã¯ãªãabsã ãŒã€maxã§ã‚‚ç­‰ä¾¡ãªå‡¦ç†ã¯ã§ãã‚‹ã€‚
 	const double delta_energy = std::max<double>(
 		EnergyOfStructure(sequence, structure1),
 		EnergyOfStructure(sequence, structure2));
 
-	//simple pathway‚ğì‚é‚½‚ß‚Ì€”õ
+	//simple pathwayã‚’ä½œã‚‹ãŸã‚ã®æº–å‚™
 	const auto A = DotNotationToBasePairSet(structure1);
 	const auto B = DotNotationToBasePairSet(structure2);
 	std::vector<std::pair<int, int>>need_to_close;
@@ -574,7 +574,7 @@ LiZhang2012RNAEAPathIndirect(
 	std::sort(need_to_close.begin(), need_to_close.end());
 	std::sort(need_to_open.begin(), need_to_open.end());
 
-	//Fig. 2‚Ì3s–ÚBˆê”ÔÅŒã‚Ìint‚ÍA‚»‚ê‚ª‚Ç‚ÌƒXƒgƒ‰ƒeƒW[‚Å—R—ˆ‚©
+	//Fig. 2ã®3è¡Œç›®ã€‚ä¸€ç•ªæœ€å¾Œã®intã¯ã€ãã‚ŒãŒã©ã®ã‚¹ãƒˆãƒ©ãƒ†ã‚¸ãƒ¼ã§ç”±æ¥ã‹
 	std::vector<std::pair<std::pair<double, std::vector<std::pair<int, int>>>, int>>population;
 	for (int i = 0; i < initial_population; ++i) {
 		const auto pathway = GenerateRandomSimplePathway(A, B, rnd);
@@ -582,10 +582,10 @@ LiZhang2012RNAEAPathIndirect(
 	}
 	std::sort(population.begin(), population.end());
 
-	//Fig. 2‚Ì4s–Ú
+	//Fig. 2ã®4è¡Œç›®
 	std::vector<std::pair<double, std::vector<std::pair<int, int>>>>best_pathways_history{ population[0].first };
 
-	//k‚ÍFig. 2‚Ì2s–Ú‚Éo‚Ä‚­‚é‚â‚ÂB ˜_•¶‚É‚ ‚éStopping conditions‚Ì”»’è‚ğs‚¤B
+	//kã¯Fig. 2ã®2è¡Œç›®ã«å‡ºã¦ãã‚‹ã‚„ã¤ã€‚ è«–æ–‡ã«ã‚ã‚‹Stopping conditionsã®åˆ¤å®šã‚’è¡Œã†ã€‚
 	const auto IsStoppingCondition = [&](const int k) {
 		assert(best_pathways_history.size() == k + 1);
 		if (best_pathways_history[k].first == delta_energy)return true;
@@ -600,18 +600,18 @@ LiZhang2012RNAEAPathIndirect(
 
 	std::vector<int>generation_plan(5, script_capital_l / 5) ;
 
-	//Fig. 2‚Ì5,6s–Ú
+	//Fig. 2ã®5,6è¡Œç›®
 	for (int k = 0; !IsStoppingCondition(k); ++k) {
 		std::cout << "LOG: RNAEAPath: start: k = " << k << ", pop = " << population.size() << std::endl;
 
-		//Fig. 2‚Ì7s–ÚBƒGƒŠ[ƒg‚ğ“ü‚ê‚éB
+		//Fig. 2ã®7è¡Œç›®ã€‚ã‚¨ãƒªãƒ¼ãƒˆã‚’å…¥ã‚Œã‚‹ã€‚
 		auto next_population = population;
 		next_population.resize(std::min<int>(next_population.size(), l1_elite_population));
 
-		//Fig. 2‚Ì8s–Ú
+		//Fig. 2ã®8è¡Œç›®
 		for (const auto x : population) {
 
-			//Fig. 9s–Ú‚Ì¶•Ó‚ÌT‚ğ’è‹`‚·‚éB
+			//Fig. 9è¡Œç›®ã®å·¦è¾ºã®Tã‚’å®šç¾©ã™ã‚‹ã€‚
 			std::vector<std::pair<std::pair<double, std::vector<std::pair<int, int>>>, int>>kindergarten;
 
 			const auto RegistrataBirth = [&](const std::vector<std::pair<int, int>>& pathway, const int strategy_id) {
@@ -643,34 +643,34 @@ LiZhang2012RNAEAPathIndirect(
 			}
 		}
 
-		//Fig. 2‚Ì12s–Ú
+		//Fig. 2ã®12è¡Œç›®
 		std::sort(next_population.begin(), next_population.end());
 		best_pathways_history.push_back(next_population[0].first);
 		std::cout << "LOG: RNAEAPath: k = " << k << ", best barrier = "<< best_pathways_history.back().first << std::endl;
 
-		//Fig. 2‚Ì13s–Ú
+		//Fig. 2ã®13è¡Œç›®
 		population = next_population;
 		if (population.size() > l3_final_max_population) {
 			population.resize(l3_final_max_population);
 		}
 
-		//˜_•¶‚Ì
+		//è«–æ–‡ã®
 		//>The number of offsprings produced by each mutation strategy
-		//‚Ì•”•ª‚Ì‹Lq‚É]‚¢Asurvive_from_the_strategy‚Ægeneration_plan‚ğXV‚·‚éB
-		//˜_•¶‚Å‚Í‰ß‹‚Ì—š—ğ‚Å¡‚Ì’l‚ğŒˆ‚ß‚é‚Æ‚¢‚¤‘‚«•û‚¾‚ªA
-		//‚±‚±‚Å‚ÍŒ»İ‚Ì—š—ğ‚ÅŸ‚Ì’l‚ğŒˆ‚ß‚é‚Æ‚¢‚¤‚±‚Æ‚É‚·‚éBŒ‹‰Ê‚Í“™‰¿‚Å‚ ‚éB
+		//ã®éƒ¨åˆ†ã®è¨˜è¿°ã«å¾“ã„ã€survive_from_the_strategyã¨generation_planã‚’æ›´æ–°ã™ã‚‹ã€‚
+		//è«–æ–‡ã§ã¯éå»ã®å±¥æ­´ã§ä»Šã®å€¤ã‚’æ±ºã‚ã‚‹ã¨ã„ã†æ›¸ãæ–¹ã ãŒã€
+		//ã“ã“ã§ã¯ç¾åœ¨ã®å±¥æ­´ã§æ¬¡ã®å€¤ã‚’æ±ºã‚ã‚‹ã¨ã„ã†ã“ã¨ã«ã™ã‚‹ã€‚çµæœã¯ç­‰ä¾¡ã§ã‚ã‚‹ã€‚
 
 		std::vector<int>survive_from_the_strategy(5, 0);
 		for (const auto p : population) {
 			if (0 <= p.second && p.second < 5)++survive_from_the_strategy[p.second];
 		}
-		//‚±‚Ì“_‚ÅAsurvive_from_the_strategy‚Í˜_•¶‚Ìb^{k}_{y'}‚É“™‚µ‚¢B
+		//ã“ã®æ™‚ç‚¹ã§ã€survive_from_the_strategyã¯è«–æ–‡ã®b^{k}_{y'}ã«ç­‰ã—ã„ã€‚
 
 		std::vector<double>b_l_ratio(5, 0);
 		for (int i = 0; i < 5; ++i)b_l_ratio[i] = double(survive_from_the_strategy[i]) / double(generation_plan[i]);
-		//‚±‚Ì“_‚ÅAb_l_ratio‚Í˜_•¶‚Ì(b^{k}_{y'} / l^{k}_{M_{y'}})‚É“™‚µ‚¢B
+		//ã“ã®æ™‚ç‚¹ã§ã€b_l_ratioã¯è«–æ–‡ã®(b^{k}_{y'} / l^{k}_{M_{y'}})ã«ç­‰ã—ã„ã€‚
 
-		//˜_•¶‚Ì®‚Ì’l‚ğŒvZ‚·‚éBl^{k+1}_{M{y}}=generation_plan[i]
+		//è«–æ–‡ã®å¼ã®å€¤ã‚’è¨ˆç®—ã™ã‚‹ã€‚l^{k+1}_{M{y}}=generation_plan[i]
 		double b_l_ratio_sum = 0.0;
 		for (int i = 0; i < 5; ++i)b_l_ratio_sum += b_l_ratio[i];
 		for (int i = 0; i < 5; ++i)generation_plan[i] = std::max<int>(3, (b_l_ratio[i] / b_l_ratio_sum) * double(script_capital_l));

@@ -1,6 +1,6 @@
-/*
+ï»¿/*
 GNU GPL v2
-Copyright (c) 2019 Hiroki Takizawa
+Copyright (c) 2020 Hiroki Takizawa
 */
 
 #include "previous_indirect_mh1998.h"
@@ -46,7 +46,7 @@ MorganHiggs1998Indirect(
 	std::vector<double>result_barrier(samples.size(), std::numeric_limits<double>::infinity());
 	std::vector<int>previous_pos(samples.size(), -2);
 
-	//DNode‚Í(ƒXƒ^[ƒg\‘¢‚©‚ç‚»‚Ì\‘¢‚Ü‚Å‚ÌƒoƒŠƒA’lA(’¼‘O‚Ì\‘¢‚Ì“YšA‚»‚Ì\‘¢‚Ì“Yš))‚Æ‚·‚éB
+	//DNodeã¯(ã‚¹ã‚¿ãƒ¼ãƒˆæ§‹é€ ã‹ã‚‰ãã®æ§‹é€ ã¾ã§ã®ãƒãƒªã‚¢å€¤ã€(ç›´å‰ã®æ§‹é€ ã®æ·»å­—ã€ãã®æ§‹é€ ã®æ·»å­—))ã¨ã™ã‚‹ã€‚
 	typedef std::pair<double, std::pair<int, int>> DNode;
 
 	std::priority_queue<DNode, std::vector<DNode>, std::greater<DNode>>dijkstra;
@@ -68,7 +68,7 @@ MorganHiggs1998Indirect(
 		}
 	}
 
-	//ƒgƒŒ[ƒXƒoƒbƒN
+	//ãƒˆãƒ¬ãƒ¼ã‚¹ãƒãƒƒã‚¯
 	std::vector<std::string>reversed_answer{ structure2 };
 	for (int structure_index = samples.size() - 1; structure_index != samples.size() - 2; structure_index = previous_pos[structure_index]) {
 		const auto partial_pathway = MorganHiggs1998Direct(sequence, samples[previous_pos[structure_index]], samples[structure_index]).first;
