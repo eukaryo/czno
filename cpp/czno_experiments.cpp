@@ -245,25 +245,24 @@ void IndirectExperiment1(const int i) {
 	if (i < 0 || dataset.size() <= i)return;
 
 	const int H = HammingDistance(dataset[i].second.first, dataset[i].second.second);
-	ResetCount();
 	std::cout << "LOG: start: " << i << "/" << dataset.size() << ", length = " << dataset[i].first.size() << ", Hamming distance = " << H << std::endl;
 	std::cout << "LOG: start: 5" << std::endl;
+	ResetCount();
 	const auto Y5 = LiZhang2012RNAEAPathIndirect(dataset[i].first, dataset[i].second.first, dataset[i].second.second, 4, 5, 10, 100, 5, 5, 100, 12345);
+	const int C5 = GetCount();
 	std::cout << "LOG: start: 6" << std::endl;
+	ResetCount();
 	const auto Y6 = MorganHiggs1998Indirect(dataset[i].first, dataset[i].second.first, dataset[i].second.second, 10);
+	const int C5 = GetCount();
 	std::cout << "LOG: start: 7" << std::endl;
+	ResetCount();
 	const auto Y7 = Dotu2010TabuIndirect(dataset[i].first, dataset[i].second.first, dataset[i].second.second, 5, 4, 7, 10000000000000.0, 12345);
+	const int C5 = GetCount();
 	std::cout << "LOG: start: 8" << std::endl;
+	ResetCount();
 	const auto Y8 = RNA2DFoldIndirect(dataset[i].first, dataset[i].second.first, dataset[i].second.second, 5);
+	const int C5 = GetCount();
 	std::cout << "LOG: end: " << i << "/" << dataset.size() << std::endl;
-	if (Y5.second == std::numeric_limits<double>::infinity())return;//algorithm failed
-	if (Y6.second == std::numeric_limits<double>::infinity())return;//algorithm failed
-	if (Y7.second == std::numeric_limits<double>::infinity())return;//algorithm failed
-	if (Y8.second == std::numeric_limits<double>::infinity())return;//algorithm failed
-	assert(IsValidPathway(dataset[i].second.first, dataset[i].second.second, Y5.first) || Y5.first.size() == 0);
-	assert(IsValidPathway(dataset[i].second.first, dataset[i].second.second, Y6.first) || Y6.first.size() == 0);
-	assert(IsValidPathway(dataset[i].second.first, dataset[i].second.second, Y7.first) || Y7.first.size() == 0);
-	assert(IsValidPathway(dataset[i].second.first, dataset[i].second.second, Y8.first) || Y8.first.size() == 0);
 
 	const auto Improve = [&](const std::pair<std::vector<std::string>, double> first, const int num) {
 		std::cout << "LOG: improve start: (data-id, method-id) = (" << i << ", " << num << ")" << std::endl;
@@ -280,25 +279,42 @@ void IndirectExperiment1(const int i) {
 		return best;
 	};
 
-	const auto YY5 = Y5.first.size() == 0 ? Y5 : Improve(Y5, 5);
-	const auto YY6 = Y6.first.size() == 0 ? Y6 : Improve(Y6, 6);
-	const auto YY7 = Y7.first.size() == 0 ? Y7 : Improve(Y7, 7);
-	const auto YY8 = Y8.first.size() == 0 ? Y8 : Improve(Y8, 8);
+	auto YY5 = Y5;
+	auto YY6 = Y6;
+	auto YY7 = Y7;
+	auto YY8 = Y8;
 
-	std::cout << "LOG: " << i << " " << H << " 5 " << Y5.second << " " << YY5.second << std::endl;
-	std::cout << "LOG: " << i << " " << H << " 6 " << Y6.second << " " << YY6.second << std::endl;
-	std::cout << "LOG: " << i << " " << H << " 7 " << Y7.second << " " << YY7.second << std::endl;
-	std::cout << "LOG: " << i << " " << H << " 8 " << Y8.second << " " << YY8.second << std::endl;
+	if (Y5.second != std::numeric_limits<double>::infinity()) {
+		assert(IsValidPathway(dataset[i].second.first, dataset[i].second.second, Y5.first) || Y5.first.size() == 0);
+		YY5 = Y5.first.size() == 0 ? Y5 : Improve(Y5, 5);
+		assert(IsValidPathway(dataset[i].second.first, dataset[i].second.second, YY5.first) || YY5.first.size() == 0);
+	}
+	if (Y6.second != std::numeric_limits<double>::infinity()) {
+		assert(IsValidPathway(dataset[i].second.first, dataset[i].second.second, Y6.first) || Y6.first.size() == 0);
+		YY6 = Y6.first.size() == 0 ? Y6 : Improve(Y6, 6);
+		assert(IsValidPathway(dataset[i].second.first, dataset[i].second.second, YY6.first) || YY6.first.size() == 0);
+	}
+	if (Y7.second != std::numeric_limits<double>::infinity()) {
+		assert(IsValidPathway(dataset[i].second.first, dataset[i].second.second, Y7.first) || Y7.first.size() == 0);
+		YY7 = Y7.first.size() == 0 ? Y7 : Improve(Y7, 7);
+		assert(IsValidPathway(dataset[i].second.first, dataset[i].second.second, YY7.first) || YY7.first.size() == 0);
+	}
+	if (Y8.second != std::numeric_limits<double>::infinity()) {
+		assert(IsValidPathway(dataset[i].second.first, dataset[i].second.second, Y8.first) || Y8.first.size() == 0);
+		YY8 = Y8.first.size() == 0 ? Y8 : Improve(Y8, 8);
+		assert(IsValidPathway(dataset[i].second.first, dataset[i].second.second, YY8.first) || YY8.first.size() == 0);
+	}
+
+	std::cout << "LOG: " << i << " " << H << " 5 " << C5 << " " << Y5.second << " " << YY5.second << std::endl;
+	std::cout << "LOG: " << i << " " << H << " 6 " << C6 << " " << Y6.second << " " << YY6.second << std::endl;
+	std::cout << "LOG: " << i << " " << H << " 7 " << C7 << " " << Y7.second << " " << YY7.second << std::endl;
+	std::cout << "LOG: " << i << " " << H << " 8 " << C8 << " " << Y8.second << " " << YY8.second << std::endl;
 	std::cout << "RESULT: " << i << " " << H << " " <<
-		Y5.second << " " << YY5.second << " " <<
-		Y6.second << " " << YY6.second << " " <<
-		Y7.second << " " << YY7.second << " " <<
-		Y8.second << " " << YY8.second <<
+		C5 << " " << Y5.second << " " << YY5.second << " " <<
+		C6 << " " << Y6.second << " " << YY6.second << " " <<
+		C7 << " " << Y7.second << " " << YY7.second << " " <<
+		C8 << " " << Y8.second << " " << YY8.second <<
 		std::endl;
-	assert(IsValidPathway(dataset[i].second.first, dataset[i].second.second, YY5.first) || YY5.first.size() == 0);
-	assert(IsValidPathway(dataset[i].second.first, dataset[i].second.second, YY6.first) || YY6.first.size() == 0);
-	assert(IsValidPathway(dataset[i].second.first, dataset[i].second.second, YY7.first) || YY7.first.size() == 0);
-	assert(IsValidPathway(dataset[i].second.first, dataset[i].second.second, YY8.first) || YY8.first.size() == 0);
 
 	return;
 }
@@ -384,7 +400,7 @@ void RealDataExperiment1(const int i, const int j) {
 	}
 	else if (j == 108) {
 		std::cout << "LOG: start: " << i << "/" << dataset.size() << ", j = " << j << ", length = " << dataset[i].first.size() << ", Hamming distance = " << H << std::endl;
-		const auto Y = RNA2DFoldIndirect(dataset[i].first, dataset[i].second.first, dataset[i].second.second, 5);
+		const auto Y = RNA2DFoldIndirect(dataset[i].first, dataset[i].second.first, dataset[i].second.second, 4);
 		std::cout << "LOG: end: " << i << "/" << dataset.size() << ", j = " << j << std::endl;
 		if (Y.second == std::numeric_limits<double>::infinity())return;//algorithm failed
 		assert(IsValidPathway(dataset[i].second.first, dataset[i].second.second, Y.first) || Y.first.size() == 0);
