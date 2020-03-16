@@ -253,15 +253,15 @@ void IndirectExperiment1(const int i) {
 	std::cout << "LOG: start: 6" << std::endl;
 	ResetCount();
 	const auto Y6 = MorganHiggs1998Indirect(dataset[i].first, dataset[i].second.first, dataset[i].second.second, 10);
-	const int C5 = GetCount();
+	const int C6 = GetCount();
 	std::cout << "LOG: start: 7" << std::endl;
 	ResetCount();
 	const auto Y7 = Dotu2010TabuIndirect(dataset[i].first, dataset[i].second.first, dataset[i].second.second, 5, 4, 7, 10000000000000.0, 12345);
-	const int C5 = GetCount();
+	const int C7 = GetCount();
 	std::cout << "LOG: start: 8" << std::endl;
 	ResetCount();
 	const auto Y8 = RNA2DFoldIndirect(dataset[i].first, dataset[i].second.first, dataset[i].second.second, 5);
-	const int C5 = GetCount();
+	const int C8 = GetCount();
 	std::cout << "LOG: end: " << i << "/" << dataset.size() << std::endl;
 
 	const auto Improve = [&](const std::pair<std::vector<std::string>, double> first, const int num) {
